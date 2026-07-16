@@ -713,10 +713,15 @@ select.table-select:focus, input.table-select:focus {
                     <option value="מנהליים">מנהליים</option>
                 </select>
             </div>
-            <button id="open-dir-btn" class="btn">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
-                בחר תיקיית נתונים
-            </button>
+            <div style="display: flex; flex-direction: column; gap: 0.75rem; width: 100%; max-width: 300px; margin-top: 1rem; align-items: center;">
+                <button id="open-dir-btn" class="btn" style="width: 100%; justify-content: center;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                    בחר תיקיית נתונים
+                </button>
+                <button id="setup-help-btn" type="button" class="btn btn-secondary" style="width: 100%; justify-content: center;">
+                    📖 מדריך למשתמש ועזרה
+                </button>
+            </div>
         </div>
 
         <div id="dashboard">
@@ -836,6 +841,9 @@ select.table-select:focus, input.table-select:focus {
                 <div class="controls-bar">
                     <h2>הקורסים שלי</h2>
                     <div style="display: flex; gap: 1rem;">
+                        <button id="dashboard-help-btn" type="button" class="btn btn-secondary">
+                            📖 מדריך למשתמש
+                        </button>
                         <button id="change-dir-btn" class="btn btn-secondary">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
                             החלף תיקייה
@@ -938,6 +946,19 @@ select.table-select:focus, input.table-select:focus {
                     <button type="submit" class="btn btn-secondary" style="width: 100%;">שמור שינויים</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div id="help-modal" class="modal">
+        <div class="modal-content fade-in" style="max-width: 700px;">
+            <div class="modal-header">
+                <h2>מדריך למשתמש ועזרה 🌿</h2>
+                <span class="close-btn" id="help-modal-close-btn">&times;</span>
+            </div>
+            <div style="max-height: 480px; overflow-y: auto; padding: 1.5rem 1rem; line-height: 1.6; text-align: right; color: var(--text-main); font-family: 'Assistant', sans-serif; white-space: pre-line; background: var(--bg-panel); border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.95rem;" id="help-content-area">
+                <!-- Javascript will load the text here -->
+            </div>
         </div>
     </div>
 
@@ -1220,9 +1241,84 @@ let currentEditRowIndex = -1;
 
 editModalCloseBtn.onclick = () => { editModal.style.display = 'none'; };
 
+// ================= Help Modal Logic & Content ================= 
+const HELP_TEXT_CONTENT = `ברוכים הבאים למערכת ניהול ומעקב גמול השתלמות!
+מערכת זו נועדה לעזור לך לרכז, לחשב ולנהל את כל שעות הקורסים וההשתלמויות שלך באופן עצמאי, מאובטח וקל.
+
+---------------------------------------------------
+1. פרטיות ואבטחה (הכי חשוב!) 🔒
+---------------------------------------------------
+המערכת היא מערכת מקומית לחלוטין (Local-First).
+* אף קובץ, מסמך או שורה מהאקסל שלך לא מועלים לאינטרנט או לאף שרת חיצוני.
+* הכל נשמר ומעובד אך ורק במחשב האישי שלך ובדפדפן שלך.
+* חיבור התיקייה מאפשר לדפדפן שלך לקרוא ולכתוב ישירות לקובץ האקסל המקומי ולנהל את הקבצים.
+
+---------------------------------------------------
+2. מבנה תיקיית העבודה 📂
+---------------------------------------------------
+בתיקייה שבחרת נוצרים אוטומטית הרכיבים הבאים:
+א. קובץ "מעקב גמול השתלמות.xlsx" - קובץ האקסל המרכז את כל נתוני הקורסים שלך.
+ב. תיקיית "מסמכים" - תיקייה בה נשמרים כל הקבצים המצורפים (תעודות, סילבוס וכד').
+ג. קובץ "HELP.txt" - קובץ הדרכה זה.
+
+---------------------------------------------------
+3. איך להשתמש במערכת? 💻
+---------------------------------------------------
+שלב א': חיבור התיקייה
+1. בכניסה הראשונה, בחרי את הסקטור שלך (מהנדסים / אקדמאים / הנדסאים / מנהליים).
+2. לחצי על כפתור "בחר תיקיית נתונים" ובחרי את תיקיית העבודה שלך במחשב.
+3. הדפדפן יבקש הרשאת עריכה - יש לאשר אותה.
+* אם התיקייה ריקה, המערכת תציע לייצר עבורך אוטומטית קובץ אקסל חדש ומעוצב!
+
+שלב ב': מעקב וצפייה בנתונים
+* בראש הדף תוכלי לראות את סיכום השעות שלך לעומת היעד של הסקטור שלך.
+* תוכלי לסנן את הטבלה לפי סטטוס הקורסים (בוצע בלבד, בוצע+בתהליך) או לעבור בין גמול א' לגמול ב'.
+
+שלב ג': הוספת קורס חדש
+1. מלאי את פרטי הקורס בתיבת "הוספת קורס חדש".
+2. לחצי על "הוסף לטבלת הקורסים שלי". הקורס יתווסף אוטומטית לטבלה ויישמר באקסל!
+* כפתור "ניקוי" יאפס וירוקן את כל השדות להזנה חדשה.
+
+שלב ד': ניהול מסמכים מצורפים 📄
+* ליד כל קורס בטבלה ישנן שלוש תיבות סימון (Checkbox) למסמכים.
+* לחיצה על כפתור "ניהול קבצים" (📂) בשורת הקורס תפתח חלון להעלאת קבצים סרוקים (PDF/תמונות).
+
+---------------------------------------------------
+4. חוקים ומגבלות לפי סקטורים ⚖️
+---------------------------------------------------
+המערכת מתוכנתת לפי כללי גמול ההשתלמות העדכניים:
+* מהנדסים:
+  - יעד שעות: 390 שעות סה"כ לגמול (מתוכן לפחות 200 שעות הכשרה).
+  - מאפשר גמול א' וגמול ב'.
+  - כולל קישור למסמך הכללים הרשמי של איגוד המהנדסים.
+* אקדמאים / הנדסאים:
+  - יעד שעות: 400 שעות סה"כ.
+  - מאפשר גמול א' וגמול ב'.
+* מנהליים:
+  - יעד שעות: 400 שעות סה"כ.
+  - זכאים לגמול א' בלבד (גמול ב' מוסתר אוטומטית לפי הנהלים).`;
+
+const helpModal = document.getElementById('help-modal');
+const helpModalCloseBtn = document.getElementById('help-modal-close-btn');
+const helpContentArea = document.getElementById('help-content-area');
+const setupHelpBtn = document.getElementById('setup-help-btn');
+const dashboardHelpBtn = document.getElementById('dashboard-help-btn');
+
+function openHelpModal() {
+    if (helpContentArea) {
+        helpContentArea.textContent = HELP_TEXT_CONTENT;
+    }
+    helpModal.style.display = 'block';
+}
+
+if (setupHelpBtn) setupHelpBtn.onclick = openHelpModal;
+if (dashboardHelpBtn) dashboardHelpBtn.onclick = openHelpModal;
+if (helpModalCloseBtn) helpModalCloseBtn.onclick = () => { helpModal.style.display = 'none'; };
+
 window.onclick = (e) => { 
     if (e.target == modal) modal.style.display = 'none'; 
     if (e.target == editModal) editModal.style.display = 'none'; 
+    if (e.target == helpModal) helpModal.style.display = 'none'; 
 };
 
 let currentGmulTab = 'א';
