@@ -1,26 +1,25 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>מעקב גמול השתלמות</title>
     <!-- SheetJS API -->
-    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-    <style>
-@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&display=swap');
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min    <style>
+@import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Frank+Ruhl+Libre:wght@400;500;700&display=swap');
 
 :root {
-    --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-    --glass-bg: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    --primary-color: #00d2ff;
-    --primary-color-hover: #3a7bd5;
-    --success-color: #00b09b;
-    --warning-color: #f39c12;
-    --danger-color: #e74c3c;
-    --text-main: #ffffff;
-    --text-muted: #b0bec5;
+    --bg-color: #FAF8F5;          /* Off-white / light cream */
+    --bg-panel: #FFFFFF;          /* Pure white card */
+    --border-color: #E6E2DA;      /* Soft warm gray border */
+    --primary-color: #6B7C6B;     /* Elegant sage green */
+    --primary-color-hover: #556355; /* Darker sage green */
+    --success-color: #768A76;     /* Earthy green */
+    --warning-color: #D3A261;     /* Warm gold/ochre */
+    --danger-color: #C07065;      /* Terracotta/rose */
+    --text-main: #2C322C;         /* Soft dark charcoal */
+    --text-muted: #7A827A;        /* Sage-toned muted gray */
+    --glass-shadow: 0 4px 20px rgba(107, 124, 107, 0.04), 0 2px 8px rgba(0, 0, 0, 0.02);
 }
 
 * {
@@ -30,47 +29,54 @@
 }
 
 body {
-    font-family: 'Heebo', sans-serif;
-    background: var(--bg-gradient);
+    font-family: 'Assistant', sans-serif;
+    background-color: var(--bg-color);
     color: var(--text-main);
     min-height: 100vh;
     direction: rtl;
-    padding: 2rem;
+    padding: 2.5rem 1.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(107, 124, 107, 0.03) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(211, 162, 97, 0.02) 0px, transparent 50%);
 }
 
 .container {
-    max-width: 1400px;
+    max-width: 1250px;
     width: 100%;
 }
 
 .header {
     text-align: center;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
 }
 
 .header h1 {
-    font-size: 2.5rem;
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 3rem;
     font-weight: 700;
-    margin-bottom: 0.5rem;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    background: -webkit-linear-gradient(#00d2ff, #3a7bd5);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.75rem;
+    color: var(--primary-color);
+    letter-spacing: -0.5px;
 }
 
-/* Glass panel utility */
+.header p {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+/* Panel/Card style */
 .glass-panel {
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
     box-shadow: var(--glass-shadow);
-    padding: 1.5rem;
+    padding: 2rem;
     margin-bottom: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 /* File setup section */
@@ -78,35 +84,56 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 1.5rem;
     margin-bottom: 3rem;
+    text-align: center;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#setup-section h2 {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
 }
 
 .btn {
-    background: linear-gradient(45deg, var(--primary-color), var(--primary-color-hover));
+    background: var(--primary-color);
     color: white;
     border: none;
-    padding: 0.8rem 1.5rem;
-    border-radius: 50px;
-    font-family: 'Heebo', sans-serif;
-    font-weight: 500;
+    padding: 0.75rem 2rem;
+    border-radius: 6px;
+    font-family: 'Assistant', sans-serif;
+    font-weight: 600;
     font-size: 1rem;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0, 210, 255, 0.4);
+    transition: all 0.25s ease;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
+    box-shadow: 0 2px 6px rgba(107, 124, 107, 0.15);
 }
 
 .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 210, 255, 0.6);
+    background: var(--primary-color-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(107, 124, 107, 0.25);
 }
 
 .btn-secondary {
-    background: linear-gradient(45deg, #4b6cb7, #182848);
-    box-shadow: 0 4px 15px rgba(75, 108, 183, 0.4);
+    background: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    box-shadow: none;
+}
+
+.btn-secondary:hover {
+    background: rgba(107, 124, 107, 0.05);
+    color: var(--primary-color-hover);
+    border-color: var(--primary-color-hover);
+    box-shadow: none;
 }
 
 /* Status Filter Styling */
@@ -114,137 +141,150 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 0.8rem;
-    margin-bottom: 1.5rem;
-    background: rgba(0,0,0,0.2);
-    padding: 0.5rem 1.5rem;
-    border-radius: 50px;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    background: #EDEAE4;
+    padding: 0.35rem;
+    border-radius: 8px;
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
 }
 
 .filter-label {
-    color: var(--text-muted);
-    font-size: 0.9rem;
+    color: var(--text-main);
+    font-size: 0.95rem;
+    font-weight: 500;
     margin-left: 0.5rem;
+    margin-right: 0.5rem;
 }
 
 .filter-btn {
     background: transparent;
     border: none;
     color: var(--text-muted);
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: 400;
+    padding: 0.4rem 1.2rem;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.2s ease;
     font-family: inherit;
 }
 
 .filter-btn:hover {
-    color: white;
-    background: rgba(255,255,255,0.05);
+    color: var(--text-main);
 }
 
 .filter-btn.active {
-    background: var(--primary-color);
-    color: white;
-    font-weight: 500;
-    box-shadow: 0 2px 10px rgba(0, 210, 255, 0.3);
+    background: var(--bg-panel);
+    color: var(--primary-color);
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 /* Tabs Styling */
 .tabs-container {
     display: flex;
     justify-content: center;
-    gap: 1rem;
+    gap: 0.5rem;
     margin-bottom: 2rem;
 }
 
 .tab-btn {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--glass-border);
+    background: transparent;
+    border: 1px solid var(--border-color);
     color: var(--text-muted);
-    padding: 0.6rem 2rem;
-    border-radius: 50px;
-    font-size: 1.1rem;
+    padding: 0.6rem 2.5rem;
+    border-radius: 6px;
+    font-size: 1.05rem;
     font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.25s ease;
     font-family: inherit;
 }
 
 .tab-btn:hover {
-    background: rgba(255,255,255,0.1);
-    color: white;
+    border-color: var(--primary-color);
+    color: var(--primary-color);
 }
 
 .tab-btn.active {
-    background: linear-gradient(45deg, var(--primary-color), var(--primary-color-hover));
+    background: var(--primary-color);
     color: white;
-    border-color: transparent;
-    box-shadow: 0 4px 15px rgba(0, 210, 255, 0.4);
+    border-color: var(--primary-color);
+    font-weight: 600;
 }
 
-/* Dashboard summary */
-#dashboard {
-    display: none; /* hidden until file loaded */
-}
-
+/* Stats */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
 }
 
 .stat-card {
     text-align: center;
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    position: relative;
-    overflow: hidden;
+    gap: 0.75rem;
+    align-items: center;
+    justify-content: center;
 }
 
 .stat-card h3 {
-    font-size: 1.2rem;
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1.3rem;
     color: var(--text-muted);
+    font-weight: 500;
 }
 
 .stat-card .value {
-    font-size: 2.5rem;
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 2.8rem;
     font-weight: 700;
     color: var(--primary-color);
 }
 
 .progress-container {
-    background: rgba(0,0,0,0.3);
-    border-radius: 20px;
-    height: 12px;
+    background: #EDEAE4;
+    border-radius: 10px;
+    height: 8px;
     width: 100%;
-    margin-top: 0.5rem;
+    margin-top: 0.25rem;
     overflow: hidden;
 }
 
 .progress-bar {
     height: 100%;
-    border-radius: 20px;
-    background: linear-gradient(90deg, #00b09b, #96c93d);
-    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 0 10px rgba(0, 176, 155, 0.5);
+    border-radius: 10px;
+    background: var(--primary-color);
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: none;
 }
 
-/* Courses Table */
+#progress-training {
+    background: var(--warning-color);
+}
+
+/* Controls Bar */
 .controls-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 1rem;
 }
 
+.controls-bar h2 {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1.8rem;
+    color: var(--primary-color);
+}
+
+/* Tables */
 .table-responsive {
     overflow-x: auto;
 }
@@ -253,85 +293,108 @@ table {
     width: 100%;
     border-collapse: collapse;
     color: var(--text-main);
+    font-size: 0.95rem;
 }
 
 th, td {
-    padding: 0.8rem;
+    padding: 1rem 0.75rem;
     text-align: right;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid var(--border-color);
     vertical-align: middle;
 }
 
 th {
-    font-weight: 500;
+    font-weight: 600;
     color: var(--primary-color);
-    text-transform: uppercase;
     font-size: 0.9rem;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.2px;
+    text-transform: none;
+    border-bottom: 2px solid var(--border-color);
 }
 
 tr:hover {
-    background: rgba(255,255,255,0.02);
+    background: #FAF9F6;
 }
 
 /* Form Styles */
 .form-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-bottom: 1rem;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.5rem;
 }
 
 .form-group label {
     font-size: 0.9rem;
-    color: var(--text-muted);
+    font-weight: 600;
+    color: var(--text-main);
 }
 
 input, select {
-    background: rgba(0,0,0,0.2);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 8px;
-    padding: 0.8rem;
-    color: white;
+    background: #FFFFFF;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.65rem 0.8rem;
+    color: var(--text-main);
     font-family: inherit;
-    transition: border-color 0.3s;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
 }
 
 input:focus, select:focus {
     outline: none;
     border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(107, 124, 107, 0.12);
 }
 
 select option {
-    background: #203a43;
-    color: white;
+    background: #FFFFFF;
+    color: var(--text-main);
 }
 
+/* Badges */
 .badge {
-    padding: 0.4rem 0.8rem;
-    border-radius: 50px;
+    padding: 0.35rem 0.75rem;
+    border-radius: 4px;
     font-size: 0.85rem;
-    font-weight: 500;
+    font-weight: 600;
     text-align: center;
-    background: rgba(255,255,255,0.1);
+    display: inline-block;
 }
 
-.badge-success { background: rgba(0, 176, 155, 0.2); color: #00b09b; border: 1px solid rgba(0, 176, 155, 0.5); }
-.badge-warning { background: rgba(243, 156, 18, 0.2); color: #f39c12; border: 1px solid rgba(243, 156, 18, 0.5); }
-.badge-danger { background: rgba(231, 76, 60, 0.2); color: #e74c3c; border: 1px solid rgba(231, 76, 60, 0.5); }
+.badge-success {
+    background: rgba(118, 138, 118, 0.12);
+    color: #4A5B4A;
+}
+
+.badge-warning {
+    background: rgba(211, 162, 97, 0.12);
+    color: #8A5D2E;
+}
+
+.badge-danger {
+    background: rgba(192, 112, 101, 0.12);
+    color: #8A3D34;
+}
 
 /* Compact inputs for tables */
 select.table-select, input.table-select {
-    padding: 0.4rem;
+    padding: 0.35rem 0.5rem;
     border-radius: 4px;
     font-size: 0.9rem;
-    max-width: 100px;
+    background: #FFFFFF;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
+}
+
+select.table-select:focus, input.table-select:focus {
+    border-color: var(--primary-color);
 }
 
 /* Actions Column Styling */
@@ -339,13 +402,15 @@ select.table-select, input.table-select {
     background: transparent;
     border: none;
     cursor: pointer;
-    font-size: 1.2rem;
-    padding: 0.2rem;
-    transition: transform 0.2s;
-    margin: 0 0.2rem;
+    font-size: 1.1rem;
+    padding: 0.25rem;
+    transition: transform 0.2s, opacity 0.2s;
+    margin: 0 0.15rem;
+    opacity: 0.8;
 }
 .btn-action:hover {
-    transform: scale(1.2);
+    transform: scale(1.15);
+    opacity: 1;
 }
 .btn-edit {
     color: var(--warning-color);
@@ -356,33 +421,43 @@ select.table-select, input.table-select {
 
 /* Document Buttons */
 .btn-doc {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: white;
+    background: #FFFFFF;
+    border: 1px solid var(--border-color);
+    color: var(--text-main);
     border-radius: 4px;
-    padding: 0.4rem 0.6rem;
-    font-size: 0.8rem;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
     cursor: pointer;
     transition: all 0.2s;
-    font-family: 'Heebo', sans-serif;
+    font-family: inherit;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.btn-doc:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    background: rgba(107, 124, 107, 0.02);
 }
 
 .btn-upload {
-    background: rgba(58, 123, 213, 0.2);
-    border-color: rgba(58, 123, 213, 0.5);
-    color: #00d2ff;
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+    background: transparent;
 }
 .btn-upload:hover {
-    background: rgba(58, 123, 213, 0.4);
+    background: rgba(107, 124, 107, 0.05);
 }
 
 .btn-view {
-    background: rgba(0, 176, 155, 0.2);
-    border-color: rgba(0, 176, 155, 0.5);
-    color: #00b09b;
+    color: var(--success-color);
+    border-color: var(--success-color);
+    background: transparent;
 }
 .btn-view:hover {
-    background: rgba(0, 176, 155, 0.4);
+    background: rgba(118, 138, 118, 0.05);
 }
 
 /* Modal Styling */
@@ -394,46 +469,54 @@ select.table-select, input.table-select {
     top: 0;
     width: 100%; 
     height: 100%; 
-    background-color: rgba(0,0,0,0.6); 
-    backdrop-filter: blur(5px);
+    background-color: rgba(44, 50, 44, 0.4); 
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
 }
 
 .modal-content {
-    background: var(--bg-gradient);
-    margin: 10% auto; 
-    padding: 2rem;
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    width: 80%;
+    background: var(--bg-panel);
+    margin: 8% auto; 
+    padding: 2.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    width: 90%;
     max-width: 600px;
-    box-shadow: var(--glass-shadow);
-    color: white;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    color: var(--text-main);
 }
 
 .modal-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid var(--border-color);
     padding-bottom: 1rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.modal-header h2 {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1.6rem;
+    color: var(--primary-color);
 }
 
 .close-btn {
-    color: #aaa;
+    color: var(--text-muted);
     font-size: 28px;
-    font-weight: bold;
+    font-weight: 300;
     cursor: pointer;
+    line-height: 1;
 }
 
 .close-btn:hover {
-    color: white;
+    color: var(--text-main);
 }
 
 .files-list {
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 0.75rem;
     margin-bottom: 1.5rem;
     max-height: 300px;
     overflow-y: auto;
@@ -443,9 +526,10 @@ select.table-select, input.table-select {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(255,255,255,0.05);
-    padding: 0.8rem 1rem;
-    border-radius: 8px;
+    background: #FAF9F6;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
 }
 
 .file-name {
@@ -453,22 +537,12 @@ select.table-select, input.table-select {
     word-break: break-all;
     margin-left: 1rem;
     font-size: 0.9rem;
+    color: var(--text-main);
 }
 
 .file-actions {
     display: flex;
-    gap: 0.5rem;
-}
-
-
-/* Animations */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.fade-in {
-    animation: fadeIn 0.6s ease forwards;
+    gap: 0.4rem;
 }
 
 #notification {
@@ -476,14 +550,15 @@ select.table-select, input.table-select {
     bottom: 2rem;
     left: 50%;
     transform: translateX(-50%) translateY(100px);
-    background: var(--success-color);
+    background: var(--primary-color);
     color: white;
-    padding: 1rem 2rem;
-    border-radius: 50px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 0.8rem 2rem;
+    border-radius: 6px;
+    box-shadow: 0 4px 15px rgba(107, 124, 107, 0.2);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s;
     opacity: 0;
     z-index: 1000;
+    font-weight: 500;
 }
 
 #notification.show {
@@ -491,7 +566,7 @@ select.table-select, input.table-select {
     opacity: 1;
 }
 
-    </style>`n
+    </style>
 </head>
 <body>
 
@@ -511,7 +586,7 @@ select.table-select, input.table-select {
                 המערכת תאתר אוטומטית את קובץ האקסל וייווצר בה אזור מסמכים.
             </p>
             <div class="form-group" style="width: 100%; max-width: 300px; text-align: right;">
-                <label style="color: white; font-weight: 500;">סקטור אליו את/ה משתייך:</label>
+                <label style="color: var(--text-main); font-weight: 500;">סקטור אליו את/ה משתייך:</label>
                 <select id="user-sector" required style="margin-bottom: 1rem;">
                     <option value="מהנדסים">מהנדסים</option>
                     <option value="אקדמאים">אקדמאים</option>
@@ -553,21 +628,21 @@ select.table-select, input.table-select {
                     <h3>מתוכן שעות "הכשרה"</h3>
                     <div class="value" id="stat-training-hours">0 / 200</div>
                     <div class="progress-container">
-                        <div class="progress-bar" id="progress-training" style="width: 0%; background: linear-gradient(90deg, #f39c12, #f1c40f);"></div>
+                        <div class="progress-bar" id="progress-training"></div>
                     </div>
                 </div>
                 <div class="glass-panel stat-card">
                     <h3>שעות חסרות ליעד</h3>
-                    <div class="value" id="stat-missing-hours" style="color: var(--danger-color)">390</div>
+                    <div class="value" id="stat-missing-hours">390</div>
                 </div>
             </div>
 
             <!-- Add New Course Form -->
             <div class="glass-panel">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <div class="controls-bar">
                     <h2>הוספת קורס חדש</h2>
-                    <a id="eng-pdf-link" href="https://www.eng.org.il/wp-content/uploads/sites/8/2025/09/%D7%A8%D7%A9%D7%99%D7%9E%D7%AA-%D7%A7%D7%95%D7%A8%D7%A1%D7%99%D7%9D-%D7%94%D7%9E%D7%95%D7%9B%D7%A8%D7%99%D7%9D-%D7%9C%D7%92%D7%9E%D7%95%D7%9C-%D7%9E%D7%94%D7%A0%D7%93%D7%A1%D7%99%D7%9D.pdf" target="_blank" class="btn btn-doc" style="background: rgba(255,255,255,0.1); color: #00d2ff; text-decoration: none;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-left: 5px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                    <a id="eng-pdf-link" href="https://www.eng.org.il/wp-content/uploads/sites/8/2025/09/%D7%A8%D7%A9%D7%99%D7%9E%D7%AA-%D7%A7%D7%95%D7%A8%D7%A1%D7%99%D7%9D-%D7%94%D7%9E%D7%95%D7%9B%D7%A8%D7%99%D7%9D-%D7%9C%D7%92%D7%9E%D7%95%D7%9C-%D7%9E%D7%94%D7%A0%D7%93%D7%A1%D7%99%D7%9D.pdf" target="_blank" class="btn btn-doc">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
                         למסמך ההסתדרות המקורי
                     </a>
                 </div>
@@ -594,9 +669,9 @@ select.table-select, input.table-select {
                         </div>
                         <div class="form-group">
                             <label>אחוז בסטטוס זה</label>
-                            <div style="display:flex; align-items:center; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; overflow: hidden; transition: all 0.3s" id="container-percent">
-                                <input type="number" id="input-percent" value="100" min="0" max="100" style="border:none; background:transparent; border-radius:0; flex-grow:1; outline:none;" required>
-                                <span style="padding: 0 10px; color: var(--text-muted); font-weight: bold; border-right: 1px solid rgba(255,255,255,0.1);">%</span>
+                            <div style="display:flex; align-items:center; background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; transition: all 0.3s" id="container-percent">
+                                <input type="number" id="input-percent" value="100" min="0" max="100" style="border:none; background:transparent; border-radius:0; flex-grow:1; outline:none; color: var(--text-main);" required>
+                                <span style="padding: 0 10px; color: var(--text-muted); font-weight: bold; border-right: 1px solid var(--border-color);">%</span>
                             </div>
                         </div>
                         <div class="form-group">
@@ -632,11 +707,11 @@ select.table-select, input.table-select {
                 <div class="controls-bar">
                     <h2>הקורסים שלי</h2>
                     <div style="display: flex; gap: 1rem;">
-                        <button id="change-dir-btn" class="btn btn-secondary" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+                        <button id="change-dir-btn" class="btn btn-secondary">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
                             החלף תיקייה
                         </button>
-                        <button id="save-file-btn" class="btn" style="background: var(--success-color); box-shadow: 0 4px 15px rgba(0, 176, 155, 0.4);">
+                        <button id="save-file-btn" class="btn">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
                             שמור באקסל
                         </button>
@@ -681,7 +756,7 @@ select.table-select, input.table-select {
                 <!-- populated by js -->
             </div>
             <div style="text-align: center; margin-top: 1rem;">
-                <button id="modal-upload-btn" class="btn btn-upload" style="background: rgba(0, 210, 255, 0.2)">+ העלאת קבצים נוספים</button>
+                <button id="modal-upload-btn" class="btn btn-upload">+ העלאת קבצים נוספים</button>
             </div>
         </div>
     </div>
@@ -716,9 +791,9 @@ select.table-select, input.table-select {
                     </div>
                     <div class="form-group">
                         <label>אחוז מהקורס בסטטוס זה</label>
-                        <div style="display:flex; align-items:center; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; overflow: hidden; transition: all 0.3s" id="edit-container-percent">
-                            <input type="number" id="edit-input-percent" value="100" min="0" max="100" style="border:none; background:transparent; border-radius:0; flex-grow:1; outline:none;" required>
-                            <span style="padding: 0 10px; color: var(--text-muted); font-weight: bold; border-right: 1px solid rgba(255,255,255,0.1);">%</span>
+                        <div style="display:flex; align-items:center; background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; transition: all 0.3s" id="edit-container-percent">
+                            <input type="number" id="edit-input-percent" value="100" min="0" max="100" style="border:none; background:transparent; border-radius:0; flex-grow:1; outline:none; color: var(--text-main);" required>
+                            <span style="padding: 0 10px; color: var(--text-muted); font-weight: bold; border-right: 1px solid var(--border-color);">%</span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -951,7 +1026,7 @@ function applyCourseTypeSync(inputElemId, typeSelectId, percentInputContainerId,
                 percentContainerElem.style.border = '1px solid var(--warning-color)';
                 setTimeout(() => { 
                     percentContainerElem.style.boxShadow = 'none'; 
-                    percentContainerElem.style.border = '1px solid rgba(255,255,255,0.1)';
+                    percentContainerElem.style.border = '1px solid var(--border-color)';
                 }, 1500);
             } else {
                 percentElem.value = 100;
@@ -1514,14 +1589,14 @@ function updateStyling(selectElem) {
     const val = selectElem.value;
     selectElem.classList.remove('badge-success', 'badge-warning', 'badge-danger');
     if (val === 'בוצע') {
-        selectElem.style.background = 'rgba(0, 176, 155, 0.2)';
-        selectElem.style.color = '#00b09b';
+        selectElem.style.background = 'rgba(118, 138, 118, 0.12)';
+        selectElem.style.color = '#4A5B4A';
     } else if (val === 'בתהליך') {
-        selectElem.style.background = 'rgba(243, 156, 18, 0.2)';
-        selectElem.style.color = '#f39c12';
+        selectElem.style.background = 'rgba(211, 162, 97, 0.12)';
+        selectElem.style.color = '#8A5D2E';
     } else {
-        selectElem.style.background = 'rgba(231, 76, 60, 0.2)';
-        selectElem.style.color = '#e74c3c';
+        selectElem.style.background = 'rgba(192, 112, 101, 0.12)';
+        selectElem.style.color = '#8A3D34';
     }
 }
 
