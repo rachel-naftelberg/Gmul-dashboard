@@ -1447,6 +1447,11 @@ function updateTable() {
 
         // Actions Column
         const tdActions = document.createElement('td');
+        const actionsContainer = document.createElement('div');
+        actionsContainer.style.display = 'flex';
+        actionsContainer.style.gap = '0.5rem';
+        actionsContainer.style.justifyContent = 'center';
+        actionsContainer.style.alignItems = 'center';
         
         const btnEdit = document.createElement('button');
         btnEdit.className = 'btn-action btn-edit';
@@ -1467,8 +1472,9 @@ function updateTable() {
             }
         };
 
-        tdActions.appendChild(btnEdit);
-        tdActions.appendChild(btnDelete);
+        actionsContainer.appendChild(btnEdit);
+        actionsContainer.appendChild(btnDelete);
+        tdActions.appendChild(actionsContainer);
 
         tr.append(tdName, tdDate, tdHours, tdType, tdPercent, tdGmulType, tdInstitute, tdStatus, tdCert, tdSyl, tdApproval, tdAttachments, tdActions);
         tableBody.appendChild(tr);
