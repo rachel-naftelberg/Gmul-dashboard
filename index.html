@@ -610,6 +610,14 @@ select.table-select:focus, input.table-select:focus {
     width: fit-content;
     font-size: 0.9rem;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    transition: all 0.2s ease;
+}
+
+.sector-badge-container[style*="cursor: pointer"]:hover {
+    background: rgba(107, 124, 107, 0.05);
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(107, 124, 107, 0.1);
 }
 
 .sector-badge-label {
@@ -718,9 +726,10 @@ select.table-select:focus, input.table-select:focus {
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
                     בחר תיקיית נתונים
                 </button>
-                <button id="setup-help-btn" type="button" class="btn btn-secondary" style="width: 100%; justify-content: center;">
-                    📖 מדריך למשתמש ועזרה
-                </button>
+                <div class="sector-badge-container" id="setup-help-btn" style="cursor: pointer; width: 100%; justify-content: center; user-select: none; margin-bottom: 0;">
+                    <span class="sector-badge-label">עזרה:</span>
+                    <span class="sector-badge">📖 מדריך למשתמש</span>
+                </div>
             </div>
         </div>
 
@@ -761,10 +770,16 @@ select.table-select:focus, input.table-select:focus {
                 </div>
             </div>
 
-            <!-- Active Sector Info Banner -->
-            <div class="sector-badge-container fade-in">
-                <span class="sector-badge-label">סקטור משויך:</span>
-                <span class="sector-badge" id="display-active-sector"></span>
+            <!-- Active Sector Info Banner & Help Link -->
+            <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 0.75rem;">
+                <div class="sector-badge-container fade-in" style="margin-bottom: 0;">
+                    <span class="sector-badge-label">סקטור משויך:</span>
+                    <span class="sector-badge" id="display-active-sector"></span>
+                </div>
+                <div class="sector-badge-container fade-in" id="dashboard-help-btn" style="cursor: pointer; margin-bottom: 0; user-select: none;">
+                    <span class="sector-badge-label">עזרה:</span>
+                    <span class="sector-badge">📖 מדריך למשתמש</span>
+                </div>
             </div>
 
             <!-- Add New Course Form -->
@@ -841,9 +856,6 @@ select.table-select:focus, input.table-select:focus {
                 <div class="controls-bar">
                     <h2>הקורסים שלי</h2>
                     <div style="display: flex; gap: 1rem;">
-                        <button id="dashboard-help-btn" type="button" class="btn btn-secondary">
-                            📖 מדריך למשתמש
-                        </button>
                         <button id="change-dir-btn" class="btn btn-secondary">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
                             החלף תיקייה
