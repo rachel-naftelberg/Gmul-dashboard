@@ -1,0 +1,1598 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>מעקב גמול השתלמות</title>
+    <!-- SheetJS API -->
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&display=swap');
+
+:root {
+    --bg-gradient: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --primary-color: #00d2ff;
+    --primary-color-hover: #3a7bd5;
+    --success-color: #00b09b;
+    --warning-color: #f39c12;
+    --danger-color: #e74c3c;
+    --text-main: #ffffff;
+    --text-muted: #b0bec5;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Heebo', sans-serif;
+    background: var(--bg-gradient);
+    color: var(--text-main);
+    min-height: 100vh;
+    direction: rtl;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container {
+    max-width: 1400px;
+    width: 100%;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    background: -webkit-linear-gradient(#00d2ff, #3a7bd5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Glass panel utility */
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: var(--glass-shadow);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+/* File setup section */
+#setup-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 3rem;
+}
+
+.btn {
+    background: linear-gradient(45deg, var(--primary-color), var(--primary-color-hover));
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-family: 'Heebo', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 210, 255, 0.4);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 210, 255, 0.6);
+}
+
+.btn-secondary {
+    background: linear-gradient(45deg, #4b6cb7, #182848);
+    box-shadow: 0 4px 15px rgba(75, 108, 183, 0.4);
+}
+
+/* Status Filter Styling */
+.filter-status-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+    background: rgba(0,0,0,0.2);
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.filter-label {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+}
+
+.filter-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+}
+
+.filter-btn:hover {
+    color: white;
+    background: rgba(255,255,255,0.05);
+}
+
+.filter-btn.active {
+    background: var(--primary-color);
+    color: white;
+    font-weight: 500;
+    box-shadow: 0 2px 10px rgba(0, 210, 255, 0.3);
+}
+
+/* Tabs Styling */
+.tabs-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.tab-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--glass-border);
+    color: var(--text-muted);
+    padding: 0.6rem 2rem;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: inherit;
+}
+
+.tab-btn:hover {
+    background: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.tab-btn.active {
+    background: linear-gradient(45deg, var(--primary-color), var(--primary-color-hover));
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 15px rgba(0, 210, 255, 0.4);
+}
+
+/* Dashboard summary */
+#dashboard {
+    display: none; /* hidden until file loaded */
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card h3 {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+}
+
+.stat-card .value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.progress-container {
+    background: rgba(0,0,0,0.3);
+    border-radius: 20px;
+    height: 12px;
+    width: 100%;
+    margin-top: 0.5rem;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    border-radius: 20px;
+    background: linear-gradient(90deg, #00b09b, #96c93d);
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 0 10px rgba(0, 176, 155, 0.5);
+}
+
+/* Courses Table */
+.controls-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--text-main);
+}
+
+th, td {
+    padding: 0.8rem;
+    text-align: right;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    vertical-align: middle;
+}
+
+th {
+    font-weight: 500;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+
+tr:hover {
+    background: rgba(255,255,255,0.02);
+}
+
+/* Form Styles */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.form-group label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+input, select {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 0.8rem;
+    color: white;
+    font-family: inherit;
+    transition: border-color 0.3s;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+
+select option {
+    background: #203a43;
+    color: white;
+}
+
+.badge {
+    padding: 0.4rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    text-align: center;
+    background: rgba(255,255,255,0.1);
+}
+
+.badge-success { background: rgba(0, 176, 155, 0.2); color: #00b09b; border: 1px solid rgba(0, 176, 155, 0.5); }
+.badge-warning { background: rgba(243, 156, 18, 0.2); color: #f39c12; border: 1px solid rgba(243, 156, 18, 0.5); }
+.badge-danger { background: rgba(231, 76, 60, 0.2); color: #e74c3c; border: 1px solid rgba(231, 76, 60, 0.5); }
+
+/* Compact inputs for tables */
+select.table-select, input.table-select {
+    padding: 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    max-width: 100px;
+}
+
+/* Actions Column Styling */
+.btn-action {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    padding: 0.2rem;
+    transition: transform 0.2s;
+    margin: 0 0.2rem;
+}
+.btn-action:hover {
+    transform: scale(1.2);
+}
+.btn-edit {
+    color: var(--warning-color);
+}
+.btn-delete {
+    color: var(--danger-color);
+}
+
+/* Document Buttons */
+.btn-doc {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white;
+    border-radius: 4px;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Heebo', sans-serif;
+}
+
+.btn-upload {
+    background: rgba(58, 123, 213, 0.2);
+    border-color: rgba(58, 123, 213, 0.5);
+    color: #00d2ff;
+}
+.btn-upload:hover {
+    background: rgba(58, 123, 213, 0.4);
+}
+
+.btn-view {
+    background: rgba(0, 176, 155, 0.2);
+    border-color: rgba(0, 176, 155, 0.5);
+    color: #00b09b;
+}
+.btn-view:hover {
+    background: rgba(0, 176, 155, 0.4);
+}
+
+/* Modal Styling */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 2000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    background-color: rgba(0,0,0,0.6); 
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: var(--bg-gradient);
+    margin: 10% auto; 
+    padding: 2rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: var(--glass-shadow);
+    color: white;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+}
+
+.close-btn {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close-btn:hover {
+    color: white;
+}
+
+.files-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(255,255,255,0.05);
+    padding: 0.8rem 1rem;
+    border-radius: 8px;
+}
+
+.file-name {
+    flex-grow: 1;
+    word-break: break-all;
+    margin-left: 1rem;
+    font-size: 0.9rem;
+}
+
+.file-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease forwards;
+}
+
+#notification {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--success-color);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0;
+    z-index: 1000;
+}
+
+#notification.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+    </style>`n
+</head>
+<body>
+
+    <!-- Autocomplete global lists -->
+    <datalist id="courses-datalist"></datalist>
+
+    <div class="container fade-in">
+        <div class="header">
+            <h1>מעקב גמול השתלמות</h1>
+            <p style="color: var(--text-muted)">ניהול, מעקב וחישוב שעות להשתלמויות שלך</p>
+        </div>
+
+        <div id="setup-section" class="glass-panel">
+            <h2>חיבור לתיקיית העבודה</h2>
+            <p style="text-align: center; color: var(--text-muted); margin-bottom: 1rem;">
+                כדי לחבר את האפליקציה למסמכים שלך, אנא בחר/י את התיקייה המלאה שלך במחשב ("גמול השתלמות").<br>
+                המערכת תאתר אוטומטית את קובץ האקסל וייווצר בה אזור מסמכים.
+            </p>
+            <div class="form-group" style="width: 100%; max-width: 300px; text-align: right;">
+                <label style="color: white; font-weight: 500;">סקטור אליו את/ה משתייך:</label>
+                <select id="user-sector" required style="margin-bottom: 1rem;">
+                    <option value="מהנדסים">מהנדסים</option>
+                    <option value="אקדמאים">אקדמאים</option>
+                    <option value="הנדסאים">הנדסאים</option>
+                    <option value="מנהליים">מנהליים</option>
+                </select>
+            </div>
+            <button id="open-dir-btn" class="btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                בחר תיקיית נתונים
+            </button>
+        </div>
+
+        <div id="dashboard">
+            <!-- Status Filter -->
+            <div class="filter-status-container fade-in">
+                <span class="filter-label">סינון סטטוס:</span>
+                <button class="filter-btn" data-status="הכל">כל הסטטוסים</button>
+                <button class="filter-btn" data-status="בוצע">בוצע בלבד</button>
+                <button class="filter-btn active" data-status="בוצע+בתהליך">בוצע + בתהליך</button>
+            </div>
+
+            <!-- Tabs -->
+            <div class="tabs-container">
+                <button class="tab-btn active" data-tab="א">גמול א'</button>
+                <button class="tab-btn" data-tab="ב">גמול ב'</button>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="glass-panel stat-card">
+                    <h3>סך הכל שעות מבוצעות</h3>
+                    <div class="value" id="stat-total-hours">0 / 390</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progress-total" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="glass-panel stat-card">
+                    <h3>מתוכן שעות "הכשרה"</h3>
+                    <div class="value" id="stat-training-hours">0 / 200</div>
+                    <div class="progress-container">
+                        <div class="progress-bar" id="progress-training" style="width: 0%; background: linear-gradient(90deg, #f39c12, #f1c40f);"></div>
+                    </div>
+                </div>
+                <div class="glass-panel stat-card">
+                    <h3>שעות חסרות ליעד</h3>
+                    <div class="value" id="stat-missing-hours" style="color: var(--danger-color)">390</div>
+                </div>
+            </div>
+
+            <!-- Add New Course Form -->
+            <div class="glass-panel">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h2>הוספת קורס חדש</h2>
+                    <a id="eng-pdf-link" href="https://www.eng.org.il/wp-content/uploads/sites/8/2025/09/%D7%A8%D7%A9%D7%99%D7%9E%D7%AA-%D7%A7%D7%95%D7%A8%D7%A1%D7%99%D7%9D-%D7%94%D7%9E%D7%95%D7%9B%D7%A8%D7%99%D7%9D-%D7%9C%D7%92%D7%9E%D7%95%D7%9C-%D7%9E%D7%94%D7%A0%D7%93%D7%A1%D7%99%D7%9D.pdf" target="_blank" class="btn btn-doc" style="background: rgba(255,255,255,0.1); color: #00d2ff; text-decoration: none;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-left: 5px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                        למסמך ההסתדרות המקורי
+                    </a>
+                </div>
+                <form id="add-course-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>שם קורס</label>
+                            <input type="text" id="input-name" list="courses-datalist" autocomplete="off" required>
+                        </div>
+                        <div class="form-group">
+                            <label>תאריך סיום הקורס</label>
+                            <input type="text" id="input-date" placeholder="DD/MM/YYYY">
+                        </div>
+                        <div class="form-group">
+                            <label>מספר שעות</label>
+                            <input type="number" id="input-hours" required min="0">
+                        </div>
+                        <div class="form-group">
+                            <label>סוג הכשרה</label>
+                            <select id="input-type" required>
+                                <option value="הכשרה">הכשרה</option>
+                                <option value="העשרה">העשרה</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>אחוז בסטטוס זה</label>
+                            <div style="display:flex; align-items:center; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; overflow: hidden; transition: all 0.3s" id="container-percent">
+                                <input type="number" id="input-percent" value="100" min="0" max="100" style="border:none; background:transparent; border-radius:0; flex-grow:1; outline:none;" required>
+                                <span style="padding: 0 10px; color: var(--text-muted); font-weight: bold; border-right: 1px solid rgba(255,255,255,0.1);">%</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>סוג גמול</label>
+                            <select id="input-gmul-type" required>
+                                <option value="א">גמול א'</option>
+                                <option value="ב">גמול ב'</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>מוסד לימודים</label>
+                            <input type="text" id="input-institute">
+                        </div>
+                        <div class="form-group">
+                            <label>סטטוס</label>
+                            <select id="input-status" required>
+                                <option value="בוצע">בוצע</option>
+                                <option value="בתהליך">בתהליך</option>
+                                <option value="נרשם">נרשם</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-secondary">הוסף קורס לטבלה</button>
+                    <!-- Small instruction about saving -->
+                    <span style="font-size: 0.8rem; color: var(--text-muted); margin-right: 1rem;">
+                        הערה: לשמירת הקורסים החדשים ולמחיקות/עריכות, אנא לחצו על השמירה לאקסל. קבצים ניתן להעלות ישירות מהטבלה למטה.
+                    </span>
+                </form>
+            </div>
+
+            <!-- Table -->
+            <div class="glass-panel">
+                <div class="controls-bar">
+                    <h2>הקורסים שלי</h2>
+                    <div style="display: flex; gap: 1rem;">
+                        <button id="change-dir-btn" class="btn btn-secondary" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                            החלף תיקייה
+                        </button>
+                        <button id="save-file-btn" class="btn" style="background: var(--success-color); box-shadow: 0 4px 15px rgba(0, 176, 155, 0.4);">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                            שמור באקסל
+                        </button>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table id="courses-table">
+                        <thead>
+                            <tr>
+                                <th>שם קורס</th>
+                                <th>תאריך סיום</th>
+                                <th>שעות</th>
+                                <th>הכשרה/העשרה</th>
+                                <th>אחוז %</th>
+                                <th>סוג גמול</th>
+                                <th>מוסד</th>
+                                <th>סטטוס</th>
+                                <th>תעודת סיום</th>
+                                <th>סילבוס</th>
+                                <th>אישור יחידה</th>
+                                <th>מסמכים מצורפים</th>
+                                <th>פעולות</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Files Modal -->
+    <div id="files-modal" class="modal">
+        <div class="modal-content fade-in">
+            <div class="modal-header">
+                <h2 id="modal-course-title">ניהול מסמכים מצורפים</h2>
+                <span class="close-btn" id="modal-close-btn">&times;</span>
+            </div>
+            <div class="files-list" id="modal-files-list">
+                <!-- populated by js -->
+            </div>
+            <div style="text-align: center; margin-top: 1rem;">
+                <button id="modal-upload-btn" class="btn btn-upload" style="background: rgba(0, 210, 255, 0.2)">+ העלאת קבצים נוספים</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Course Modal -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content fade-in">
+            <div class="modal-header">
+                <h2>עריכת פרטי קורס</h2>
+                <span class="close-btn" id="edit-modal-close-btn">&times;</span>
+            </div>
+            <form id="edit-course-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>שם קורס</label>
+                        <input type="text" id="edit-input-name" list="courses-datalist" autocomplete="off" required>
+                    </div>
+                    <div class="form-group">
+                        <label>תאריך סיום</label>
+                        <input type="text" id="edit-input-date" placeholder="DD/MM/YYYY">
+                    </div>
+                    <div class="form-group">
+                        <label>מספר שעות</label>
+                        <input type="number" id="edit-input-hours" required min="0">
+                    </div>
+                    <div class="form-group">
+                        <label>סוג הכשרה</label>
+                        <select id="edit-input-type" required>
+                            <option value="הכשרה">הכשרה</option>
+                            <option value="העשרה">העשרה</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>אחוז מהקורס בסטטוס זה</label>
+                        <div style="display:flex; align-items:center; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; overflow: hidden; transition: all 0.3s" id="edit-container-percent">
+                            <input type="number" id="edit-input-percent" value="100" min="0" max="100" style="border:none; background:transparent; border-radius:0; flex-grow:1; outline:none;" required>
+                            <span style="padding: 0 10px; color: var(--text-muted); font-weight: bold; border-right: 1px solid rgba(255,255,255,0.1);">%</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>מוסד לימודים</label>
+                        <input type="text" id="edit-input-institute">
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 1rem;">
+                    <button type="submit" class="btn btn-secondary" style="width: 100%;">שמור שינויים</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="notification">נשמר בהצלחה!</div>
+
+    <script>
+// IndexedDB Helper for saving directory handle
+const IDBStorage = {
+    async getDB() {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open('GmulOptionsDB', 1);
+            request.onerror = () => reject(request.error);
+            request.onsuccess = () => resolve(request.result);
+            request.onupgradeneeded = (e) => {
+                const db = e.target.result;
+                if (!db.objectStoreNames.contains('store')) {
+                    db.createObjectStore('store');
+                }
+            };
+        });
+    },
+    async set(key, value) {
+        const db = await this.getDB();
+        return new Promise((resolve, reject) => {
+            const tx = db.transaction('store', 'readwrite');
+            const store = tx.objectStore('store');
+            const request = store.put(value, key);
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+        });
+    },
+    async get(key) {
+        const db = await this.getDB();
+        return new Promise((resolve, reject) => {
+            const tx = db.transaction('store', 'readonly');
+            const store = tx.objectStore('store');
+            const request = store.get(key);
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+        });
+    },
+    async remove(key) {
+        const db = await this.getDB();
+        return new Promise((resolve, reject) => {
+            const tx = db.transaction('store', 'readwrite');
+            const store = tx.objectStore('store');
+            const request = store.delete(key);
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+        });
+    }
+};
+
+let dirHandle = null;
+let excelFileHandle = null;
+let excelData = [];
+// Updated column schema
+const COLS = ['שם קורס', 'תאריך סיום הקורס', 'מספר שעות', 'סוג הכשרה', 'אחוז מוכר הכשרה', 'סוג גמול (א/ב)', 'מוסד לימודים', 'סטטוס', 'תעודת סיום', 'סילבוס', 'אישור קורס משרד החינוך', 'מסמכים מצורפים'];
+
+// ================= Courses Database & Auto-Complete System ================= 
+const defaultCoursesDatabase = [
+    { name: "חקירת כשלים והצלחות בארגון", type: "הכשרה" },
+    { name: "ניהול סיכונים תפעוליים בתנאי חוסר ודאות", type: "הכשרה" },
+    { name: "בינה מלאכותית ומודל שפה מתקדם ChatGPT", type: "הכשרה" },
+    { name: "העשרה מקצועית טכנולוגית", type: "הכשרה" },
+    { name: "ניהול איכות ואבטחת איכות", type: "הכשרה" },
+    { name: "מבוא לסייבר", type: "הכשרה" },
+    { name: "חידושים טכנולוגיים/עדכונים טכנולוגיים", type: "הכשרה" },
+    { name: "רובוטיקה מתקדם", type: "הכשרה" },
+    { name: "ניהול פרויקטים", type: "הכשרה" }, 
+    { name: "העשרה לטכנולוגיות מתקדמות", type: "הכשרה" }, 
+
+    { name: "ניהול כללי", type: "העשרה" },
+    { name: "ניהול עסקי", type: "העשרה" },
+    { name: "מנהל עסקים", type: "העשרה" },
+    { name: "מנהל ציבורי", type: "העשרה" },
+    { name: "דירקטורים", type: "העשרה" },
+    { name: "תקשורת בינאישית", type: "העשרה" },
+    { name: "תקשורת ארגונית", type: "העשרה" },
+    { name: "תקשורת המונים", type: "העשרה" },
+    { name: "מבוא לכלכלה", type: "העשרה" },
+    { name: "מאקרו כלכלה", type: "העשרה" },
+    { name: "מיקרו כלכלה", type: "העשרה" },
+    { name: "תורת המשחקים", type: "העשרה" },
+    { name: "שפה זרה", type: "העשרה" },
+    { name: "עריכה לשונית", type: "העשרה" },
+    { name: "עריכה לשונית וכתיבה מנהלית", type: "העשרה" },
+    { name: "יישומי מחשב", type: "העשרה" },
+    { name: "אסרטיביות", type: "העשרה" },
+    { name: "גישור", type: "העשרה" },
+    { name: "קבלת החלטות", type: "העשרה" },
+    { name: "ניהול מו\"מ", type: "העשרה" },
+    { name: "פיתוח מצוינות", type: "העשרה" },
+    { name: "פיתוח קריירה", type: "העשרה" },
+    { name: "אינטליגנציה רגשית", type: "העשרה" },
+    { name: "חשיבה יצירתית", type: "העשרה" },
+    { name: "ניהול זמן", type: "העשרה" },
+    { name: "עבודת צוות", type: "העשרה" },
+    { name: "כישורי חיים מנצחים NLP", type: "העשרה" },
+    { name: "שיפור תדמית אישית/מקצועית", type: "העשרה" },
+    { name: "התמודדות עם לחץ ושחיקה בעבודה", type: "העשרה" },
+    { name: "מבוא לפסיכולוגיה ארגונית", type: "העשרה" },
+    { name: "מבוא לסוציולוגיה ארגונית", type: "העשרה" },
+    { name: "מבוא להתנהגות ארגונית", type: "העשרה" },
+    { name: "שינוי ארגוני", type: "העשרה" },
+    { name: "ניהול ידע בארגונים", type: "העשרה" },
+    { name: "אתיקה בארגונים", type: "העשרה" },
+    { name: "דיני עבודה ויחסי עבודה", type: "העשרה" },
+    { name: "אחריות משפטית של עובד ציבור", type: "העשרה" },
+    { name: "בינה מלאכותית AI", type: "העשרה" },
+    { name: "טכנולוגיות מתקדמות ובינה מלאכותית בעולם העבודה", type: "העשרה" },
+    { name: "קאנבה", type: "העשרה" },
+    { name: "מדיה חברתית", type: "העשרה" },
+    { name: "מערכות ארגוניות דיגיטליות", type: "העשרה" }
+];
+
+let activeCoursesDB = [];
+let currentSector = 'מהנדסים';
+
+function applySectorRules() {
+    // PDF Link logic
+    const pdfLink = document.getElementById('eng-pdf-link');
+    if (pdfLink) {
+        pdfLink.style.display = (currentSector === 'מהנדסים') ? 'inline-flex' : 'none';
+    }
+
+    // Administrators get only Gmul A
+    const tabB = document.querySelector(`.tab-btn[data-tab="ב"]`);
+    const gmulAddSelector = document.getElementById('input-gmul-type');
+    
+    if (currentSector === 'מנהליים') {
+        if (tabB) tabB.style.display = 'none';
+        if (gmulAddSelector) {
+            gmulAddSelector.innerHTML = '<option value="א">גמול א\'</option>';
+            gmulAddSelector.value = 'א';
+        }
+        // Force back to tab A if needed
+        tabButtons.forEach(b => b.classList.remove('active'));
+        const tabA = document.querySelector(`.tab-btn[data-tab="א"]`);
+        if(tabA) tabA.classList.add('active');
+        currentGmulTab = 'א';
+
+    } else {
+        if (tabB) tabB.style.display = 'inline-block';
+        if (gmulAddSelector) {
+            if (gmulAddSelector.options.length < 2) {
+                gmulAddSelector.innerHTML = '<option value="א">גמול א\'</option><option value="ב">גמול ב\'</option>';
+            }
+        }
+    }
+}
+
+async function initCoursesDatabase() {
+    if (currentSector !== 'מהנדסים') {
+        return; // Don't run autocomplete for non-engineers
+    }
+    
+    activeCoursesDB = [...defaultCoursesDatabase]; 
+    try {
+        const fileHandle = await dirHandle.getFileHandle('מאגר_קורסים.xlsx');
+        const file = await fileHandle.getFile();
+        const buffer = await file.arrayBuffer();
+        const wb = XLSX.read(buffer, { type: 'array' });
+        const ws = wb.Sheets[wb.SheetNames[0]];
+        const rawRows = XLSX.utils.sheet_to_json(ws);
+        
+        if (rawRows.length > 0) {
+            activeCoursesDB = rawRows.map(r => ({
+                name: r['שם קורס'],
+                type: r['סוג קורס (הכשרה/העשרה)']
+            })).filter(c => c.name); 
+        }
+    } catch(e) {
+        // File doesn't exist, create it from default memory
+        try {
+            const wsData = [['שם קורס', 'סוג קורס (הכשרה/העשרה)']];
+            defaultCoursesDatabase.forEach(c => wsData.push([c.name, c.type]));
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, XLSX.utils.aoa_to_sheet(wsData), "מאגר קורסים");
+            const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+            
+            const newHandle = await dirHandle.getFileHandle('מאגר_קורסים.xlsx', {create: true});
+            const writable = await newHandle.createWritable();
+            await writable.write(wbout);
+            await writable.close();
+        } catch(createErr) {}
+    }
+    
+    // Populate dropdown HTML component
+    const datalist = document.getElementById('courses-datalist');
+    datalist.innerHTML = '';
+    const namesSet = new Set();
+    activeCoursesDB.forEach(c => {
+        if (!namesSet.has(c.name)) {
+            const opt = document.createElement('option');
+            opt.value = c.name;
+            datalist.appendChild(opt);
+            namesSet.add(c.name);
+        }
+    });
+}
+
+function applyCourseTypeSync(inputElemId, typeSelectId, percentInputContainerId, percentInputId) {
+    const inputElem = document.getElementById(inputElemId);
+    const selectElem = document.getElementById(typeSelectId);
+    const percentContainerElem = document.getElementById(percentInputContainerId);
+    const percentElem = document.getElementById(percentInputId);
+    
+    inputElem.addEventListener('input', () => {
+        const val = inputElem.value.trim();
+        const found = activeCoursesDB.find(c => c.name === val);
+        if (found && found.type) {
+            
+            // 50/50 rule pop-up warning replaced with autofill
+            if (val === "ניהול פרויקטים" || val === "העשרה לטכנולוגיות מתקדמות") {
+                percentElem.value = 50;
+                percentContainerElem.style.transition = 'box-shadow 0.3s, background 0.3s';
+                percentContainerElem.style.boxShadow = '0 0 15px var(--warning-color)';
+                percentContainerElem.style.border = '1px solid var(--warning-color)';
+                setTimeout(() => { 
+                    percentContainerElem.style.boxShadow = 'none'; 
+                    percentContainerElem.style.border = '1px solid rgba(255,255,255,0.1)';
+                }, 1500);
+            } else {
+                percentElem.value = 100;
+            }
+
+            const opts = selectElem.options;
+            for(let i=0; i<opts.length; i++) {
+                if (opts[i].value === found.type) {
+                    opts[i].selected = true;
+                    // Flash effect to show it was populated
+                    selectElem.style.transition = 'box-shadow 0.3s';
+                    selectElem.style.boxShadow = '0 0 15px var(--success-color)';
+                    setTimeout(() => { selectElem.style.boxShadow = 'none'; }, 800);
+                    break;
+                }
+            }
+        }
+    });
+}
+
+// Instantiate automated recommendation links with percentage IDs
+applyCourseTypeSync('input-name', 'input-type', 'container-percent', 'input-percent');
+applyCourseTypeSync('edit-input-name', 'edit-input-type', 'edit-container-percent', 'edit-input-percent');
+
+// ================= Global Form Variables ================= 
+const btnOpenDir = document.getElementById('open-dir-btn');
+const btnChangeDir = document.getElementById('change-dir-btn');
+const btnSave = document.getElementById('save-file-btn');
+const setupSection = document.getElementById('setup-section');
+const dashboard = document.getElementById('dashboard');
+const tableBody = document.querySelector('#courses-table tbody');
+const addCourseForm = document.getElementById('add-course-form');
+const notification = document.getElementById('notification');
+
+const tabButtons = document.querySelectorAll('.tab-btn');
+const filterButtons = document.querySelectorAll('.filter-btn');
+
+// Files Modal Logic
+const modal = document.getElementById('files-modal');
+const modalCloseBtn = document.getElementById('modal-close-btn');
+const modalFilesList = document.getElementById('modal-files-list');
+const modalUploadBtn = document.getElementById('modal-upload-btn');
+const modalTitle = document.getElementById('modal-course-title');
+let currentModalRowIndex = -1;
+
+modalCloseBtn.onclick = () => { modal.style.display = 'none'; };
+
+// Edit Modal Logic
+const editModal = document.getElementById('edit-modal');
+const editModalCloseBtn = document.getElementById('edit-modal-close-btn');
+const editCourseForm = document.getElementById('edit-course-form');
+let currentEditRowIndex = -1;
+
+editModalCloseBtn.onclick = () => { editModal.style.display = 'none'; };
+
+window.onclick = (e) => { 
+    if (e.target == modal) modal.style.display = 'none'; 
+    if (e.target == editModal) editModal.style.display = 'none'; 
+};
+
+let currentGmulTab = 'א';
+let currentStatusFilter = 'בוצע+בתהליך'; 
+const REQUIRED_TOTAL = 390;
+const REQUIRED_TRAINING = 200;
+
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        const savedSector = await IDBStorage.get('userSector');
+        if (savedSector) {
+            currentSector = savedSector;
+            document.getElementById('user-sector').value = savedSector;
+        }
+
+        const savedHandle = await IDBStorage.get('gmulDirHandle');
+        if (savedHandle) {
+            btnOpenDir.innerHTML = `
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+                התחברות מהירה לתיקייה שלי
+            `;
+            const header = setupSection.querySelector('h2');
+            header.textContent = 'תיקייה כבר שמורה במערכת';
+        }
+    } catch(e) { }
+});
+
+filterButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        currentStatusFilter = e.target.getAttribute('data-status');
+        updateTable();
+        updateStats();
+    });
+});
+
+tabButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        tabButtons.forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        currentGmulTab = e.target.getAttribute('data-tab');
+        updateTable();
+        updateStats();
+    });
+});
+
+btnOpenDir.addEventListener('click', async () => {
+    try {
+        currentSector = document.getElementById('user-sector').value;
+        await IDBStorage.set('userSector', currentSector);
+
+        dirHandle = await IDBStorage.get('gmulDirHandle');
+        
+        if (dirHandle) {
+            const mode = 'readwrite';
+            let perm = await dirHandle.queryPermission({ mode });
+            if (perm !== 'granted') {
+                perm = await dirHandle.requestPermission({ mode });
+            }
+            if (perm !== 'granted') {
+                dirHandle = null;
+            }
+        }
+        
+        if (!dirHandle) {
+            dirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
+            await IDBStorage.set('gmulDirHandle', dirHandle);
+        }
+        
+        try {
+            excelFileHandle = await dirHandle.getFileHandle('מעקב גמול השתלמות.xlsx', {create: false});
+        } catch (e) {
+            alert('לא נמצא קובץ "מעקב גמול השתלמות.xlsx" בתיקייה שנבחרה. אנא בחרי תיקייה מתאימה.');
+            await IDBStorage.remove('gmulDirHandle');
+            return;
+        }
+
+        await dirHandle.getDirectoryHandle('מסמכים', {create: true});
+        
+        // Init automated course database logic
+        applySectorRules();
+        await initCoursesDatabase();
+
+        await loadExcelData();
+        setupSection.style.display = 'none';
+        dashboard.style.display = 'block';
+        
+    } catch (error) {
+        console.error('Error opening directory:', error);
+    }
+});
+
+btnChangeDir.addEventListener('click', async () => {
+    await IDBStorage.remove('gmulDirHandle');
+    window.location.reload();
+});
+
+btnSave.addEventListener('click', async () => {
+    try {
+        if (!excelFileHandle) return;
+        
+        const wsData = [COLS];
+        excelData.forEach(row => {
+            const arr = COLS.map(col => row[col] !== undefined ? row[col] : '');
+            wsData.push(arr);
+        });
+
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.aoa_to_sheet(wsData);
+        XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+        const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+
+        const writable = await excelFileHandle.createWritable();
+        await writable.write(wbout);
+        await writable.close();
+        
+        showNotification('הקובץ נשמר בהצלחה לאקסל!');
+    } catch (error) {
+        console.error('Error saving file:', error);
+        alert('שגיאה בשמירת הקובץ. ודאי שהוא לא פתוח בתוכנה אחרת באותו זמן.');
+    }
+});
+
+addCourseForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const newCourse = {
+        'שם קורס': document.getElementById('input-name').value,
+        'תאריך סיום הקורס': document.getElementById('input-date').value,
+        'מספר שעות': Number(document.getElementById('input-hours').value),
+        'סוג הכשרה': document.getElementById('input-type').value,
+        'אחוז מוכר הכשרה': Number(document.getElementById('input-percent').value),
+        'סוג גמול (א/ב)': document.getElementById('input-gmul-type').value,
+        'מוסד לימודים': document.getElementById('input-institute').value,
+        'סטטוס': document.getElementById('input-status').value,
+        'תעודת סיום': '',
+        'סילבוס': '',
+        'אישור קורס משרד החינוך': '',
+        'מסמכים מצורפים': ''
+    };
+    
+    excelData.push(newCourse);
+    updateTable();
+    updateStats();
+    
+    addCourseForm.reset();
+    document.getElementById('input-percent').value = 100; // Reset default
+});
+
+// Submit handled via Edit
+editCourseForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (currentEditRowIndex === -1) return;
+
+    excelData[currentEditRowIndex]['שם קורס'] = document.getElementById('edit-input-name').value;
+    excelData[currentEditRowIndex]['תאריך סיום הקורס'] = document.getElementById('edit-input-date').value;
+    excelData[currentEditRowIndex]['מספר שעות'] = Number(document.getElementById('edit-input-hours').value);
+    excelData[currentEditRowIndex]['סוג הכשרה'] = document.getElementById('edit-input-type').value;
+    excelData[currentEditRowIndex]['אחוז מוכר הכשרה'] = Number(document.getElementById('edit-input-percent').value);
+    excelData[currentEditRowIndex]['מוסד לימודים'] = document.getElementById('edit-input-institute').value;
+
+    editModal.style.display = 'none';
+    currentEditRowIndex = -1;
+    updateTable();
+    updateStats();
+    showNotification('פרטי הקורס עודכנו!');
+});
+
+
+async function loadExcelData() {
+    const file = await excelFileHandle.getFile();
+    const buffer = await file.arrayBuffer();
+    const wb = XLSX.read(buffer, { type: 'array' });
+    const wsname = wb.SheetNames[0];
+    const ws = wb.Sheets[wsname];
+    
+    const rawData = XLSX.utils.sheet_to_json(ws, { defval: '' });
+    
+    excelData = rawData.map(row => {
+        const cleanObj = {};
+        for (let key in row) {
+            cleanObj[key.trim()] = row[key];
+        }
+        return cleanObj;
+    });
+
+    // Migrate defaults if mapping from older version of Excel sheet without new properties
+    excelData.forEach(row => {
+        if (!row['מסמכים מצורפים']) row['מסמכים מצורפים'] = '';
+        if (row['אחוז מוכר הכשרה'] === undefined || row['אחוז מוכר הכשרה'] === '') row['אחוז מוכר הכשרה'] = 100;
+        
+        const docLinks = [];
+        if (row['מסמכים מצורפים']) {
+            docLinks.push(...row['מסמכים מצורפים'].split(',').map(s=>s.trim()).filter(s=>s));
+        }
+
+        ['תעודת סיום', 'סילבוס', 'אישור קורס משרד החינוך'].forEach(col => {
+            const val = (row[col] || '').trim();
+            if (val && val !== 'כן' && val !== 'לא') {
+                docLinks.push(val);
+                row[col] = 'כן';
+            }
+        });
+        row['מסמכים מצורפים'] = docLinks.join(', ');
+    });
+    
+    updateTable();
+    updateStats();
+}
+
+function matchesStatusFilter(status) {
+    status = (status || '').trim();
+    if (currentStatusFilter === 'הכל') return true;
+    if (currentStatusFilter === 'בוצע') return status === 'בוצע';
+    if (currentStatusFilter === 'בוצע+בתהליך') return status === 'בוצע' || status === 'בתהליך';
+    return true;
+}
+
+function createYesNoSelect(rowIndex, colName) {
+    const select = document.createElement('select');
+    select.className = 'table-select';
+    ['', 'כן', 'לא'].forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v;
+        opt.textContent = v === '' ? '-' : v;
+        if ((excelData[rowIndex][colName] || '').trim() === v) opt.selected = true;
+        select.appendChild(opt);
+    });
+    select.onchange = (e) => {
+        excelData[rowIndex][colName] = e.target.value;
+    };
+    return select;
+}
+
+function updateTable() {
+    tableBody.innerHTML = '';
+    
+    excelData.forEach((row, index) => {
+        const gmulType = (row['סוג גמול (א/ב)'] || '').trim();
+        if (!gmulType.includes(currentGmulTab)) return;
+
+        const status = (row['סטטוס'] || '').trim();
+        if (!matchesStatusFilter(status)) return;
+
+        const tr = document.createElement('tr');
+        const courseName = row['שם קורס'] || '';
+        
+        const tdName = document.createElement('td'); tdName.textContent = courseName;
+        const tdDate = document.createElement('td'); tdDate.textContent = row['תאריך סיום הקורס'] || '';
+        const tdHours = document.createElement('td'); tdHours.textContent = row['מספר שעות'] || '0';
+        
+        const tdType = document.createElement('td');
+        const typeSelect = document.createElement('select');
+        typeSelect.className = 'table-select';
+        ['הכשרה', 'העשרה'].forEach(t => {
+            const opt = document.createElement('option');
+            opt.value = t;
+            opt.textContent = t;
+            if ((row['סוג הכשרה'] || '').includes(t)) opt.selected = true;
+            typeSelect.appendChild(opt);
+        });
+        typeSelect.onchange = (e) => {
+            excelData[index]['סוג הכשרה'] = e.target.value;
+            updateStats();
+        };
+        tdType.appendChild(typeSelect);
+
+        // Percentage Inline Cell
+        const tdPercent = document.createElement('td');
+        const inputPercent = document.createElement('input');
+        inputPercent.type = 'number';
+        inputPercent.min = '0';
+        inputPercent.max = '100';
+        inputPercent.className = 'table-select'; 
+        inputPercent.style.width = '65px';
+        inputPercent.style.padding = '0.3rem';
+        inputPercent.value = (row['אחוז מוכר הכשרה'] !== undefined && row['אחוז מוכר הכשרה'] !== '') ? row['אחוז מוכר הכשרה'] : 100;
+        inputPercent.onchange = (e) => {
+            excelData[index]['אחוז מוכר הכשרה'] = Number(e.target.value);
+            updateStats();
+        };
+        tdPercent.appendChild(inputPercent);
+
+        const tdGmulType = document.createElement('td');
+        const gmulSelect = document.createElement('select');
+        gmulSelect.className = 'table-select';
+        
+        const gmulOptions = (currentSector === 'מנהליים') ? ['א'] : ['א', 'ב'];
+        gmulOptions.forEach(t => {
+            const opt = document.createElement('option');
+            opt.value = t;
+            opt.textContent = `גמול ${t}'`;
+            if (gmulType.includes(t)) opt.selected = true;
+            gmulSelect.appendChild(opt);
+        });
+        gmulSelect.onchange = (e) => {
+            excelData[index]['סוג גמול (א/ב)'] = e.target.value;
+            updateTable(); 
+            updateStats();
+        };
+        tdGmulType.appendChild(gmulSelect);
+        
+        const tdInstitute = document.createElement('td'); tdInstitute.textContent = row['מוסד לימודים'] || '';
+        
+        const tdStatus = document.createElement('td');
+        const statusSelect = document.createElement('select');
+        statusSelect.className = 'table-select';
+        const currentStatus = (row['סטטוס'] || '').trim();
+        const statuses = ['בוצע', 'בתהליך', 'נרשם'];
+        if (currentStatus && !statuses.includes(currentStatus)) statuses.push(currentStatus);
+        
+        statuses.forEach(s => {
+            const opt = document.createElement('option'); opt.value = s; opt.textContent = s;
+            if (s === currentStatus) opt.selected = true;
+            statusSelect.appendChild(opt);
+        });
+        statusSelect.onchange = (e) => {
+            excelData[index]['סטטוס'] = e.target.value;
+            updateStyling(statusSelect);
+            updateTable();
+            updateStats();
+        };
+        updateStyling(statusSelect);
+        tdStatus.appendChild(statusSelect);
+
+        const tdCert = document.createElement('td'); tdCert.appendChild(createYesNoSelect(index, 'תעודת סיום'));
+        const tdSyl = document.createElement('td'); tdSyl.appendChild(createYesNoSelect(index, 'סילבוס'));
+        const tdApproval = document.createElement('td'); tdApproval.appendChild(createYesNoSelect(index, 'אישור קורס משרד החינוך'));
+
+        // Attachments Column
+        const tdAttachments = document.createElement('td');
+        const attachedFiles = (row['מסמכים מצורפים'] || '').split(',').map(s=>s.trim()).filter(s=>s);
+        const attachBtn = document.createElement('button');
+        attachBtn.className = 'btn-doc btn-upload';
+        attachBtn.textContent = attachedFiles.length > 0 ? `ניהול קבצים (${attachedFiles.length})` : '+ חבר קובץ';
+        attachBtn.onclick = () => openFilesModal(index);
+        tdAttachments.appendChild(attachBtn);
+
+        // Actions Column
+        const tdActions = document.createElement('td');
+        
+        const btnEdit = document.createElement('button');
+        btnEdit.className = 'btn-action btn-edit';
+        btnEdit.title = 'עריכת פרטים';
+        btnEdit.innerHTML = '✏️';
+        btnEdit.onclick = () => openEditModal(index);
+
+        const btnDelete = document.createElement('button');
+        btnDelete.className = 'btn-action btn-delete';
+        btnDelete.title = 'מחיקת קורס';
+        btnDelete.innerHTML = '🗑️';
+        btnDelete.onclick = () => {
+            if (confirm(`האם את בטוחה שברצונך למחוק לחלוטין את הקורס "${courseName}"?\r\nלא ניתן לשחזר פעולה זו.`)) {
+                excelData.splice(index, 1);
+                updateTable();
+                updateStats();
+                showNotification('הקורס הוסר המטבלה!');
+            }
+        };
+
+        tdActions.appendChild(btnEdit);
+        tdActions.appendChild(btnDelete);
+
+        tr.append(tdName, tdDate, tdHours, tdType, tdPercent, tdGmulType, tdInstitute, tdStatus, tdCert, tdSyl, tdApproval, tdAttachments, tdActions);
+        tableBody.appendChild(tr);
+    });
+}
+
+function openEditModal(rowIndex) {
+    currentEditRowIndex = rowIndex;
+    const row = excelData[rowIndex];
+    document.getElementById('edit-input-name').value = row['שם קורס'] || '';
+    document.getElementById('edit-input-date').value = row['תאריך סיום הקורס'] || '';
+    document.getElementById('edit-input-hours').value = row['מספר שעות'] || '';
+    document.getElementById('edit-input-type').value = row['סוג הכשרה'] || 'הכשרה';
+    const percentVal = row['אחוז מוכר הכשרה'];
+    document.getElementById('edit-input-percent').value = (percentVal !== undefined && percentVal !== '') ? percentVal : 100;
+    document.getElementById('edit-input-institute').value = row['מוסד לימודים'] || '';
+    
+    editModal.style.display = 'block';
+}
+
+// Open multiple files Modal
+function openFilesModal(rowIndex) {
+    currentModalRowIndex = rowIndex;
+    const courseName = excelData[rowIndex]['שם קורס'] || 'קורס מבלי שם';
+    modalTitle.textContent = `מסמכים עבור: ${courseName}`;
+    renderFilesList();
+    modal.style.display = 'block';
+}
+
+function renderFilesList() {
+    modalFilesList.innerHTML = '';
+    const filesStr = excelData[currentModalRowIndex]['מסמכים מצורפים'] || '';
+    const files = filesStr.split(',').map(s=>s.trim()).filter(s=>s);
+    
+    if (files.length === 0) {
+        modalFilesList.innerHTML = '<p style="color: var(--text-muted); text-align: center;">לא צורפו מסמכים חיצוניים לקורס זה עד כה.</p>';
+        return;
+    }
+
+    files.forEach((filename, i) => {
+        const item = document.createElement('div');
+        item.className = 'file-item';
+        
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'file-name';
+        nameSpan.textContent = filename;
+
+        const actions = document.createElement('div');
+        actions.className = 'file-actions';
+
+        const btnView = document.createElement('button');
+        btnView.className = 'btn-doc btn-view';
+        btnView.textContent = 'פתח קובץ';
+        btnView.onclick = () => openDocument(filename);
+
+        const btnDel = document.createElement('button');
+        btnDel.className = 'btn-doc badge-danger';
+        btnDel.style.borderColor = 'transparent';
+        btnDel.textContent = 'הסר עותק';
+        btnDel.onclick = () => {
+            if(confirm('לנתק קובץ זה מרשימת הנספחים? (שימו לב - הקובץ עצמו יישאר בתיקיית מסמכים למקרה הצורך)')) {
+                files.splice(i, 1);
+                excelData[currentModalRowIndex]['מסמכים מצורפים'] = files.join(', ');
+                updateTable(); 
+                renderFilesList();
+            }
+        };
+
+        actions.appendChild(btnView);
+        actions.appendChild(btnDel);
+        item.appendChild(nameSpan);
+        item.appendChild(actions);
+        modalFilesList.appendChild(item);
+    });
+}
+
+modalUploadBtn.onclick = async () => {
+    const courseName = excelData[currentModalRowIndex]['שם קורס'];
+    if (!courseName) {
+        alert('יש לתת שם לקורס טרם העלאת מסמכים.');
+        return;
+    }
+
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.multiple = true;
+    input.accept = 'application/pdf,image/*';
+    input.onchange = async (e) => {
+        const files = e.target.files;
+        if (!files || files.length === 0) return;
+
+        try {
+            const docsDir = await dirHandle.getDirectoryHandle('מסמכים');
+            const safeCourseName = courseName.replace(/[\\/:*?"<>|]/g, '-');
+            
+            const existingFilesStr = excelData[currentModalRowIndex]['מסמכים מצורפים'] || '';
+            const existingFiles = existingFilesStr.split(',').map(s=>s.trim()).filter(s=>s);
+
+            for(let i=0; i<files.length; i++) {
+                const file = files[i];
+                const extension = file.name.split('.').pop();
+                const randomId = Math.floor(Math.random()*100000);
+                const targetFileName = `${safeCourseName} - ${randomId}.${extension}`;
+
+                const destFileHandle = await docsDir.getFileHandle(targetFileName, { create: true });
+                const writable = await destFileHandle.createWritable();
+                await writable.write(file);
+                await writable.close();
+
+                existingFiles.push(targetFileName);
+            }
+
+            excelData[currentModalRowIndex]['מסמכים מצורפים'] = existingFiles.join(', ');
+            updateTable();
+            renderFilesList();
+            showNotification(`סיום: הועלו ${files.length} מסמכים חדשים בהצלחה!`);
+
+        } catch (error) {
+            console.error('Error saving document:', error);
+            alert('אירעה שגיאה בשמירת המסמך לתיקייה.');
+        }
+    };
+    input.click();
+};
+
+async function openDocument(filename) {
+    try {
+        const docsDir = await dirHandle.getDirectoryHandle('מסמכים');
+        const fileHandle = await docsDir.getFileHandle(filename);
+        const file = await fileHandle.getFile();
+        const url = URL.createObjectURL(file);
+        window.open(url, '_blank');
+    } catch (e) {
+        alert('לא ניתן למצוא את הקובץ. ייתכן שהוא נמחק מתיקיית ה"מסמכים".');
+    }
+}
+
+function updateStyling(selectElem) {
+    const val = selectElem.value;
+    selectElem.classList.remove('badge-success', 'badge-warning', 'badge-danger');
+    if (val === 'בוצע') {
+        selectElem.style.background = 'rgba(0, 176, 155, 0.2)';
+        selectElem.style.color = '#00b09b';
+    } else if (val === 'בתהליך') {
+        selectElem.style.background = 'rgba(243, 156, 18, 0.2)';
+        selectElem.style.color = '#f39c12';
+    } else {
+        selectElem.style.background = 'rgba(231, 76, 60, 0.2)';
+        selectElem.style.color = '#e74c3c';
+    }
+}
+
+function updateStats() {
+    let totalHours = 0;
+    let trainingHours = 0;
+    
+    excelData.forEach(row => {
+        const gmulType = (row['סוג גמול (א/ב)'] || '').trim();
+        if (!gmulType.includes(currentGmulTab)) return;
+
+        const status = (row['סטטוס'] || '').trim();
+        if (!matchesStatusFilter(status)) return;
+
+        let hours = parseFloat(row['מספר שעות']);
+        if (isNaN(hours)) hours = 0;
+        
+        totalHours += hours;
+        
+        const type = (row['סוג הכשרה'] || '').trim();
+        let percent = parseFloat(row['אחוז מוכר הכשרה']);
+        // fallback robust defaults if invalid
+        if (isNaN(percent) || percent < 0) percent = 100;
+
+        if (type.includes('הכשרה')) {
+            trainingHours += hours * (percent / 100);
+        }
+    });
+
+    // Formatting for display (no long decimals)
+    trainingHours = Math.round(trainingHours * 10) / 10;
+    totalHours = Math.round(totalHours * 10) / 10;
+
+    let targetTotal = REQUIRED_TOTAL;
+    let targetTraining = REQUIRED_TRAINING;
+    
+    document.getElementById('stat-total-hours').textContent = `${totalHours} / ${targetTotal}`;
+    document.getElementById('stat-training-hours').textContent = `${trainingHours} / ${targetTraining}`;
+    
+    const totalPercent = Math.min(100, (totalHours / targetTotal) * 100);
+    const trainingPercent = Math.min(100, (trainingHours / targetTraining) * 100);
+    
+    document.getElementById('progress-total').style.width = `${totalPercent}%`;
+    document.getElementById('progress-training').style.width = `${trainingPercent}%`;
+    
+    const missing = Math.max(0, targetTotal - totalHours);
+    const missingEl = document.getElementById('stat-missing-hours');
+    if (missing === 0) {
+        if (trainingHours >= targetTraining) {
+            missingEl.textContent = 'היעד הושג! 🎉';
+            missingEl.style.color = 'var(--success-color)';
+        } else {
+            missingEl.textContent = `חסרות ${Math.round((targetTraining - trainingHours)*10)/10} שעות הכשרה`;
+            missingEl.style.color = 'var(--warning-color)';
+        }
+    } else {
+        missingEl.textContent = missing;
+        missingEl.style.color = 'var(--danger-color)';
+    }
+}
+
+function showNotification(msg) {
+    notification.textContent = msg;
+    notification.classList.add('show');
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 4500);
+}
+
+    </script>
+</body>
+</html>
+
+
