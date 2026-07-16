@@ -1256,12 +1256,38 @@ btnOpenDir.addEventListener('click', async () => {
             await IDBStorage.set('gmulDirHandle', dirHandle);
         }
         
+        let createNew = false;
         try {
             excelFileHandle = await dirHandle.getFileHandle('מעקב גמול השתלמות.xlsx', {create: false});
         } catch (e) {
-            alert('לא נמצא קובץ "מעקב גמול השתלמות.xlsx" בתיקייה שנבחרה. אנא בחרי תיקייה מתאימה.');
-            await IDBStorage.remove('gmulDirHandle');
-            return;
+            createNew = true;
+        }
+
+        if (createNew) {
+            if (confirm('לא נמצא קובץ "מעקב גמול השתלמות.xlsx" בתיקייה שנבחרה.\n\nהאם ברצונך לייצר קובץ אקסל חדש ונקי בתיקייה זו כדי להתחיל לעבוד?')) {
+                try {
+                    excelFileHandle = await dirHandle.getFileHandle('מעקב גמול השתלמות.xlsx', {create: true});
+                    const wsData = [COLS];
+                    const wb = XLSX.utils.book_new();
+                    const ws = XLSX.utils.aoa_to_sheet(wsData);
+                    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+                    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+                    
+                    const writable = await excelFileHandle.createWritable();
+                    await writable.write(wbout);
+                    await writable.close();
+                    
+                    alert('קובץ אקסל חדש ונקי נוצר בהצלחה בתיקייה שלך!');
+                } catch(err) {
+                    console.error('Error creating new excel:', err);
+                    alert('שגיאה ביצירת קובץ האקסל החדש. ודאי שיש הרשאות כתיבה לתיקייה.');
+                    await IDBStorage.remove('gmulDirHandle');
+                    return;
+                }
+            } else {
+                await IDBStorage.remove('gmulDirHandle');
+                return;
+            }
         }
 
         await dirHandle.getDirectoryHandle('מסמכים', {create: true});
