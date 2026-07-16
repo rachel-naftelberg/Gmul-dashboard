@@ -673,6 +673,7 @@ select.table-select:focus, input.table-select:focus {
                         <div class="form-group">
                             <label>סוג הכשרה</label>
                             <select id="input-type" required>
+                                <option value="" disabled selected hidden></option>
                                 <option value="הכשרה">הכשרה</option>
                                 <option value="העשרה">העשרה</option>
                             </select>
@@ -680,13 +681,14 @@ select.table-select:focus, input.table-select:focus {
                         <div class="form-group">
                             <label>אחוז בסטטוס זה</label>
                             <div style="display:flex; align-items:center; background: #FFFFFF; border: 1px solid var(--border-color); border-radius: 6px; overflow: hidden; transition: all 0.3s" id="container-percent">
-                                <input type="number" id="input-percent" value="100" min="0" max="100" style="border:none; background:transparent; border-radius:0; flex-grow:1; outline:none; color: var(--text-main);" required>
+                                <input type="number" id="input-percent" min="0" max="100" style="border:none; background:transparent; border-radius:0; flex-grow:1; outline:none; color: var(--text-main);">
                                 <span style="padding: 0 10px; color: var(--text-muted); font-weight: bold; border-right: 1px solid var(--border-color);">%</span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label>סוג גמול</label>
                             <select id="input-gmul-type" required>
+                                <option value="" disabled selected hidden></option>
                                 <option value="א">גמול א'</option>
                                 <option value="ב">גמול ב'</option>
                             </select>
@@ -698,6 +700,7 @@ select.table-select:focus, input.table-select:focus {
                         <div class="form-group">
                             <label>סטטוס</label>
                             <select id="input-status" required>
+                                <option value="" disabled selected hidden></option>
                                 <option value="בוצע">בוצע</option>
                                 <option value="בתהליך">בתהליך</option>
                                 <option value="נרשם">נרשם</option>
@@ -1197,8 +1200,10 @@ btnChangeDir.addEventListener('click', async () => {
 
 btnClearTable.addEventListener('click', () => {
     addCourseForm.reset();
-    const percentInput = document.getElementById('input-percent');
-    if (percentInput) percentInput.value = '100';
+    document.getElementById('input-type').value = "";
+    document.getElementById('input-gmul-type').value = "";
+    document.getElementById('input-status').value = "";
+    document.getElementById('input-percent').value = "";
     showNotification('השדות נוקו בהצלחה!');
 });
 
@@ -1231,12 +1236,15 @@ btnSave.addEventListener('click', async () => {
 
 addCourseForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    const percentVal = document.getElementById('input-percent').value;
+    const percent = percentVal === '' ? 100 : Number(percentVal);
+    
     const newCourse = {
         'שם קורס': document.getElementById('input-name').value,
         'תאריך סיום הקורס': document.getElementById('input-date').value,
         'מספר שעות': Number(document.getElementById('input-hours').value),
         'סוג הכשרה': document.getElementById('input-type').value,
-        'אחוז מוכר הכשרה': Number(document.getElementById('input-percent').value),
+        'אחוז מוכר הכשרה': percent,
         'סוג גמול (א/ב)': document.getElementById('input-gmul-type').value,
         'מוסד לימודים': document.getElementById('input-institute').value,
         'סטטוס': document.getElementById('input-status').value,
@@ -1251,7 +1259,10 @@ addCourseForm.addEventListener('submit', (e) => {
     updateStats();
     
     addCourseForm.reset();
-    document.getElementById('input-percent').value = 100; // Reset default
+    document.getElementById('input-type').value = "";
+    document.getElementById('input-gmul-type').value = "";
+    document.getElementById('input-status').value = "";
+    document.getElementById('input-percent').value = "";
 });
 
 // Submit handled via Edit
