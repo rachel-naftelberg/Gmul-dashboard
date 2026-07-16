@@ -10,17 +10,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Frank+Ruhl+Libre:wght@400;500;700&display=swap');
 
 :root {
-    --bg-color: #F6F3EC;          /* Richer warm sand background */
-    --bg-panel: #FFFFFF;          /* Pure white card */
-    --border-color: #CFCABF;      /* Darker warm gray border for better contrast */
-    --primary-color: #4A5B4A;     /* Deeper sage green for high contrast readability */
-    --primary-color-hover: #364436; /* Dark forest green */
-    --success-color: #4A5B4A;     /* Earthy green */
-    --warning-color: #B27B32;     /* Stronger warm gold/ochre */
-    --danger-color: #A05247;      /* Stronger terracotta/rose */
-    --text-main: #1C201C;         /* Deeper charcoal for maximum readability */
-    --text-muted: #4F564F;        /* Darker muted green-gray */
-    --glass-shadow: 0 4px 24px rgba(74, 91, 74, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
+    --bg-color: #ECE8DD;          /* Darker warm sand background for card isolation */
+    --bg-panel: #FFFFFF;          /* Pure white card for maximum pop */
+    --border-color: #AAA393;      /* Solid darker border for strong borders */
+    --primary-color: #273827;     /* Very deep forest sage green for maximum text legibility */
+    --primary-color-hover: #162416; /* Extremely dark forest/black-green */
+    --success-color: #273827;     /* Deep green */
+    --warning-color: #99621E;     /* Deeper, highly visible gold/ochre */
+    --danger-color: #8C3E33;      /* Deeper, highly visible terracotta/rose */
+    --text-main: #0B0E0B;         /* Solid near-black for perfect readability */
+    --text-muted: #3D443D;        /* Much darker muted text for strong readability */
+    --glass-shadow: 0 4px 24px rgba(39, 56, 39, 0.08), 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 * {
@@ -144,7 +144,7 @@ body {
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 2rem;
-    background: #E5E0D5;
+    background: #DFD9CD;
     padding: 0.35rem;
     border-radius: 8px;
     width: fit-content;
@@ -254,7 +254,7 @@ body {
 }
 
 .progress-container {
-    background: #EDEAE4;
+    background: #D5D0C2;
     border-radius: 10px;
     height: 8px;
     width: 100%;
@@ -310,11 +310,12 @@ th, td {
 }
 
 th {
-    font-weight: 600;
+    font-weight: 700;
     color: var(--primary-color);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     letter-spacing: 0.2px;
     text-transform: none;
+    background-color: #EDEAE4;
     border-bottom: 2px solid var(--border-color);
 }
 
