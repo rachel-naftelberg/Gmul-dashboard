@@ -376,18 +376,21 @@ select option {
 }
 
 .badge-success {
-    background: rgba(118, 138, 118, 0.12);
-    color: #4A5B4A;
+    background: rgba(39, 56, 39, 0.15);
+    color: #1F2D1F;
+    font-weight: 600;
 }
 
 .badge-warning {
-    background: rgba(211, 162, 97, 0.12);
-    color: #8A5D2E;
+    background: rgba(153, 98, 30, 0.15);
+    color: #613C0E;
+    font-weight: 600;
 }
 
 .badge-danger {
-    background: rgba(192, 112, 101, 0.12);
-    color: #8A3D34;
+    background: rgba(140, 62, 51, 0.15);
+    color: #59221B;
+    font-weight: 600;
 }
 
 /* Compact inputs for tables */
@@ -702,7 +705,7 @@ select.table-select:focus, input.table-select:focus {
                         </div>
                     </div>
                     <button type="submit" class="btn btn-secondary">הוסף לטבלת הקורסים שלי</button>
-                    <button type="button" id="clear-table-btn" class="btn btn-secondary" style="border-color: var(--danger-color); color: var(--danger-color);">ניקוי טבלה</button>
+                    <button type="button" id="clear-table-btn" class="btn btn-secondary">ניקוי</button>
                     <!-- Small instruction about saving -->
                     <span style="font-size: 0.8rem; color: var(--text-muted); margin-right: 1rem;">
                         הערה: לשמירת הקורסים החדשים ולמחיקות/עריכות, אנא לחצו על השמירה לאקסל. קבצים ניתן להעלות ישירות מהטבלה למטה.
@@ -1193,12 +1196,10 @@ btnChangeDir.addEventListener('click', async () => {
 });
 
 btnClearTable.addEventListener('click', () => {
-    if (confirm('האם את בטוחה שברצונך למחוק את כל הקורסים מהטבלה?\r\n\r\nשים לב: פעולה זו תרוקן לחלוטין את הטבלה הזמנית על המסך. השינוי יישמר לקובץ האקסל המקורי רק במידה ותלחצי על "שמור באקסל".\r\nאם תרצי לבטל את הפעולה, תוכלי פשוט לרענן את העמוד (F5) מבלי לשמור.')) {
-        excelData = [];
-        updateTable();
-        updateStats();
-        showNotification('הטבלה נוקתה בהצלחה!');
-    }
+    addCourseForm.reset();
+    const percentInput = document.getElementById('input-percent');
+    if (percentInput) percentInput.value = '100';
+    showNotification('השדות נוקו בהצלחה!');
 });
 
 btnSave.addEventListener('click', async () => {
@@ -1627,14 +1628,17 @@ function updateStyling(selectElem) {
     const val = selectElem.value;
     selectElem.classList.remove('badge-success', 'badge-warning', 'badge-danger');
     if (val === 'בוצע') {
-        selectElem.style.background = 'rgba(118, 138, 118, 0.12)';
-        selectElem.style.color = '#4A5B4A';
+        selectElem.style.background = 'rgba(39, 56, 39, 0.15)';
+        selectElem.style.color = '#1F2D1F';
+        selectElem.style.fontWeight = '600';
     } else if (val === 'בתהליך') {
-        selectElem.style.background = 'rgba(211, 162, 97, 0.12)';
-        selectElem.style.color = '#8A5D2E';
+        selectElem.style.background = 'rgba(153, 98, 30, 0.15)';
+        selectElem.style.color = '#613C0E';
+        selectElem.style.fontWeight = '600';
     } else {
-        selectElem.style.background = 'rgba(192, 112, 101, 0.12)';
-        selectElem.style.color = '#8A3D34';
+        selectElem.style.background = 'rgba(140, 62, 51, 0.15)';
+        selectElem.style.color = '#59221B';
+        selectElem.style.fontWeight = '600';
     }
 }
 
