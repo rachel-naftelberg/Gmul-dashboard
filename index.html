@@ -1311,20 +1311,28 @@ function matchesStatusFilter(status) {
     return true;
 }
 
-function createYesNoSelect(rowIndex, colName) {
-    const select = document.createElement('select');
-    select.className = 'table-select';
-    ['', 'כן', 'לא'].forEach(v => {
-        const opt = document.createElement('option');
-        opt.value = v;
-        opt.textContent = v === '' ? '-' : v;
-        if ((excelData[rowIndex][colName] || '').trim() === v) opt.selected = true;
-        select.appendChild(opt);
-    });
-    select.onchange = (e) => {
-        excelData[rowIndex][colName] = e.target.value;
+function createYesNoCheckbox(rowIndex, colName) {
+    const container = document.createElement('div');
+    container.style.display = 'flex';
+    container.style.justifyContent = 'center';
+    container.style.alignItems = 'center';
+    
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.style.cursor = 'pointer';
+    checkbox.style.width = '18px';
+    checkbox.style.height = '18px';
+    checkbox.style.accentColor = 'var(--primary-color)';
+    
+    const val = (excelData[rowIndex][colName] || '').trim();
+    checkbox.checked = (val === 'כן');
+    
+    checkbox.onchange = (e) => {
+        excelData[rowIndex][colName] = e.target.checked ? 'כן' : 'לא';
     };
-    return select;
+    
+    container.appendChild(checkbox);
+    return container;
 }
 
 function updateTable() {
@@ -1424,9 +1432,9 @@ function updateTable() {
         updateStyling(statusSelect);
         tdStatus.appendChild(statusSelect);
 
-        const tdCert = document.createElement('td'); tdCert.appendChild(createYesNoSelect(index, 'תעודת סיום'));
-        const tdSyl = document.createElement('td'); tdSyl.appendChild(createYesNoSelect(index, 'סילבוס'));
-        const tdApproval = document.createElement('td'); tdApproval.appendChild(createYesNoSelect(index, 'אישור קורס משרד החינוך'));
+        const tdCert = document.createElement('td'); tdCert.appendChild(createYesNoCheckbox(index, 'תעודת סיום'));
+        const tdSyl = document.createElement('td'); tdSyl.appendChild(createYesNoCheckbox(index, 'סילבוס'));
+        const tdApproval = document.createElement('td'); tdApproval.appendChild(createYesNoCheckbox(index, 'אישור קורס משרד החינוך'));
 
         // Attachments Column
         const tdAttachments = document.createElement('td');
