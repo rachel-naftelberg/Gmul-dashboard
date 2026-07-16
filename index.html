@@ -598,6 +598,33 @@ select.table-select:focus, input.table-select:focus {
     gap: 0.4rem;
 }
 
+.sector-badge-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-color);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    width: fit-content;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+}
+
+.sector-badge-label {
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.sector-badge {
+    color: var(--primary-color);
+    font-weight: 700;
+    background: rgba(39, 56, 39, 0.08);
+    padding: 0.2rem 0.75rem;
+    border-radius: 12px;
+}
+
 #notification {
     position: fixed;
     bottom: 2rem;
@@ -693,6 +720,11 @@ select.table-select:focus, input.table-select:focus {
         </div>
 
         <div id="dashboard">
+            <!-- Active Sector Info Banner -->
+            <div class="sector-badge-container fade-in">
+                <span class="sector-badge-label">סקטור משויך:</span>
+                <span class="sector-badge" id="display-active-sector"></span>
+            </div>
             <!-- Status Filter -->
             <div class="filter-status-container fade-in">
                 <span class="filter-label">סינון סטטוס:</span>
@@ -1025,6 +1057,10 @@ let activeCoursesDB = [];
 let currentSector = 'מהנדסים';
 
 function applySectorRules() {
+    const activeSectorEl = document.getElementById('display-active-sector');
+    if (activeSectorEl) {
+        activeSectorEl.textContent = currentSector;
+    }
     // PDF Link logic
     const pdfLink = document.getElementById('eng-pdf-link');
     if (pdfLink) {
