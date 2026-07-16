@@ -10,17 +10,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Frank+Ruhl+Libre:wght@400;500;700&display=swap');
 
 :root {
-    --bg-color: #FAF8F5;          /* Off-white / light cream */
+    --bg-color: #F6F3EC;          /* Richer warm sand background */
     --bg-panel: #FFFFFF;          /* Pure white card */
-    --border-color: #E6E2DA;      /* Soft warm gray border */
-    --primary-color: #6B7C6B;     /* Elegant sage green */
-    --primary-color-hover: #556355; /* Darker sage green */
-    --success-color: #768A76;     /* Earthy green */
-    --warning-color: #D3A261;     /* Warm gold/ochre */
-    --danger-color: #C07065;      /* Terracotta/rose */
-    --text-main: #2C322C;         /* Soft dark charcoal */
-    --text-muted: #7A827A;        /* Sage-toned muted gray */
-    --glass-shadow: 0 4px 20px rgba(107, 124, 107, 0.04), 0 2px 8px rgba(0, 0, 0, 0.02);
+    --border-color: #CFCABF;      /* Darker warm gray border for better contrast */
+    --primary-color: #4A5B4A;     /* Deeper sage green for high contrast readability */
+    --primary-color-hover: #364436; /* Dark forest green */
+    --success-color: #4A5B4A;     /* Earthy green */
+    --warning-color: #B27B32;     /* Stronger warm gold/ochre */
+    --danger-color: #A05247;      /* Stronger terracotta/rose */
+    --text-main: #1C201C;         /* Deeper charcoal for maximum readability */
+    --text-muted: #4F564F;        /* Darker muted green-gray */
+    --glass-shadow: 0 4px 24px rgba(74, 91, 74, 0.06), 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 * {
@@ -144,7 +144,7 @@ body {
     align-items: center;
     gap: 0.5rem;
     margin-bottom: 2rem;
-    background: #EDEAE4;
+    background: #E5E0D5;
     padding: 0.35rem;
     border-radius: 8px;
     width: fit-content;
@@ -215,6 +215,11 @@ body {
     color: white;
     border-color: var(--primary-color);
     font-weight: 600;
+}
+
+/* Dashboard summary */
+#dashboard {
+    display: none; /* hidden until file loaded */
 }
 
 /* Stats */
