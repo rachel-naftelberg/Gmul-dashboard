@@ -701,7 +701,8 @@ select.table-select:focus, input.table-select:focus {
                             </select>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-secondary">הוסף קורס לטבלה</button>
+                    <button type="submit" class="btn btn-secondary">הוסף לטבלת הקורסים שלי</button>
+                    <button type="button" id="clear-table-btn" class="btn btn-secondary" style="border-color: var(--danger-color); color: var(--danger-color);">ניקוי טבלה</button>
                     <!-- Small instruction about saving -->
                     <span style="font-size: 0.8rem; color: var(--text-muted); margin-right: 1rem;">
                         הערה: לשמירת הקורסים החדשים ולמחיקות/עריכות, אנא לחצו על השמירה לאקסל. קבצים ניתן להעלות ישירות מהטבלה למטה.
@@ -717,10 +718,6 @@ select.table-select:focus, input.table-select:focus {
                         <button id="change-dir-btn" class="btn btn-secondary">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
                             החלף תיקייה
-                        </button>
-                        <button id="clear-table-btn" class="btn" style="background-color: var(--danger-color); box-shadow: 0 2px 6px rgba(140, 62, 51, 0.15);">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                            ניקוי טבלה
                         </button>
                         <button id="save-file-btn" class="btn">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
