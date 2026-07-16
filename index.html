@@ -50,17 +50,28 @@ body {
 }
 
 .header {
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
     margin-bottom: 3rem;
+}
+
+.header-text-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: right;
 }
 
 .header h1 {
     font-family: 'Frank Ruhl Libre', serif;
     font-size: 3rem;
     font-weight: 700;
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.25rem;
     color: var(--primary-color);
     letter-spacing: -0.5px;
+    line-height: 1.1;
 }
 
 .header p {
@@ -72,12 +83,13 @@ body {
 .logo-container {
     display: flex;
     justify-content: center;
-    margin-bottom: 1.5rem;
+    align-items: center;
 }
 
 .header-logo {
     filter: drop-shadow(0 4px 12px rgba(39, 56, 39, 0.15));
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
 }
 
 .header-logo:hover {
@@ -627,8 +639,10 @@ select.table-select:focus, input.table-select:focus {
                     <path d="M32 46C27 43 22 45 20 51C24 54 28 50 32 49" fill="rgba(39, 56, 39, 0.1)" />
                 </svg>
             </div>
-            <h1>מעקב גמול השתלמות</h1>
-            <p style="color: var(--text-muted)">ניהול, מעקב וחישוב שעות להשתלמויות שלך</p>
+            <div class="header-text-group">
+                <h1>מעקב גמול השתלמות</h1>
+                <p style="color: var(--text-muted)">ניהול, מעקב וחישוב שעות להשתלמויות שלך</p>
+            </div>
         </div>
 
         <div id="setup-section" class="glass-panel">
@@ -798,11 +812,11 @@ select.table-select:focus, input.table-select:focus {
                     </table>
                 </div>
             </div>
-            <!-- Footer -->
-            <footer class="footer">
-                <p>© כל הזכויות שמורות לרחל נפתלברג</p>
-            </footer>
         </div>
+        <!-- Footer -->
+        <footer class="footer">
+            <p>© כל הזכויות שמורות לרחל נפתלברג</p>
+        </footer>
     </div>
 
     <!-- Files Modal -->
