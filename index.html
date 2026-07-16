@@ -1390,8 +1390,11 @@ function updateTable() {
         });
         gmulSelect.onchange = (e) => {
             excelData[index]['סוג גמול (א/ב)'] = e.target.value;
-            updateTable(); 
             updateStats();
+            // Soft-filtering: don't hide the row immediately while the user is editing it
+            if (e.target.value.includes(currentGmulTab)) {
+                updateTable();
+            }
         };
         tdGmulType.appendChild(gmulSelect);
         
@@ -1412,8 +1415,11 @@ function updateTable() {
         statusSelect.onchange = (e) => {
             excelData[index]['סטטוס'] = e.target.value;
             updateStyling(statusSelect);
-            updateTable();
             updateStats();
+            // Soft-filtering: don't hide the row immediately while the user is editing it
+            if (matchesStatusFilter(e.target.value)) {
+                updateTable();
+            }
         };
         updateStyling(statusSelect);
         tdStatus.appendChild(statusSelect);
