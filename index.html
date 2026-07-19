@@ -634,6 +634,126 @@ select.table-select:focus, input.table-select:focus {
     border-radius: 12px;
 }
 
+/* Help Modal Content Styles */
+.help-guide-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    font-family: 'Assistant', sans-serif;
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+.help-guide-section {
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(107, 124, 107, 0.1);
+    text-align: right;
+}
+.help-guide-section:last-child {
+    border-bottom: none;
+}
+
+.help-guide-title {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-size: 1.2rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+}
+
+.help-card-privacy {
+    background: rgba(39, 56, 39, 0.04);
+    border: 1px dashed var(--primary-color);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+}
+
+.help-step-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-right: 0;
+    list-style: none;
+    margin: 0;
+}
+
+.help-step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.help-step-number {
+    background: var(--primary-color);
+    color: white;
+    font-size: 0.85rem;
+    font-weight: bold;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+}
+
+.help-step-text {
+    flex-grow: 1;
+    font-size: 0.9rem;
+}
+
+.help-sector-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+.help-sector-card {
+    background: #FAF9F6;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem;
+    text-align: center;
+    transition: all 0.25s ease;
+}
+.help-sector-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 10px rgba(107, 124, 107, 0.05);
+}
+
+.help-sector-name {
+    font-family: 'Frank Ruhl Libre', serif;
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 1.05rem;
+    margin-bottom: 0.3rem;
+}
+
+.help-sector-target {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.help-badge-inline {
+    background: rgba(39, 56, 39, 0.08);
+    color: var(--primary-color);
+    padding: 0.1rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: inline-block;
+    margin: 0.1rem;
+}
+
 #notification {
     position: fixed;
     bottom: 2rem;
@@ -985,8 +1105,87 @@ select.table-select:focus, input.table-select:focus {
                 </div>
                 <span class="close-btn" id="help-modal-close-btn">&times;</span>
             </div>
-            <div style="max-height: 480px; overflow-y: auto; padding: 1.5rem 1rem; line-height: 1.6; text-align: right; color: var(--text-main); font-family: 'Assistant', sans-serif; white-space: pre-line; background: var(--bg-panel); border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.95rem;" id="help-content-area">
-                <!-- Javascript will load the text here -->
+            <div style="max-height: 480px; overflow-y: auto; padding: 1.5rem; text-align: right; color: var(--text-main); font-family: 'Assistant', sans-serif; background: var(--bg-panel); border-radius: 8px; border: 1px solid var(--border-color);" id="help-content-area">
+                <div class="help-guide-container">
+                    
+                    <!-- Section 1: Privacy -->
+                    <div class="help-guide-section">
+                        <div class="help-guide-title">
+                            <span>🔒</span> אבטחה ופרטיות מידע (Local-First)
+                        </div>
+                        <div class="help-card-privacy">
+                            <strong>המערכת מאובטחת ומקומית לחלוטין:</strong> אף קובץ, מסמך או שורת נתונים מהאקסל שלכם לא מועלים לאינטרנט או לאף שרת חיצוני! הכל נשמר ומעובד אך ורק במחשב האישי ובדפדפן שלכם לפרטיות מוחלטת.
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Quick Start -->
+                    <div class="help-guide-section">
+                        <div class="help-guide-title">
+                            <span>💻</span> מדריך שימוש מהיר במערכת
+                        </div>
+                        <ul class="help-step-list">
+                            <li class="help-step-item">
+                                <span class="help-step-number">1</span>
+                                <div class="help-step-text">
+                                    <strong>חיבור התיקייה:</strong> בחרו את הסקטור שלכם, לחצו על כפתור <strong>"בחר תיקיית נתונים"</strong> ובחרו את תיקיית העבודה שלכם במחשב. אם התיקייה ריקה, המערכת תציע לייצר עבורכם קובץ אקסל חדש ומעוצב!
+                                </div>
+                            </li>
+                            <li class="help-step-item">
+                                <span class="help-step-number">2</span>
+                                <div class="help-step-text">
+                                    <strong>מעקב נתונים:</strong> בראש הדף מוצגים סיכומי השעות לעומת היעד של הסקטור שלכם. תוכלו לסנן את הטבלה לפי סטטוס הקורסים או לעבור בין גמול א' לגמול ב'.
+                                </div>
+                            </li>
+                            <li class="help-step-item">
+                                <span class="help-step-number">3</span>
+                                <div class="help-step-text">
+                                    <strong>הוספת קורס:</strong> מלאו את פרטי הקורס בתיבת "הוספת קורס חדש" ולחצו על <strong>"הוסף לטבלת הקורסים שלי"</strong>. כפתור <strong>"ניקוי"</strong> יאפס וירוקן את כל השדות להזנה חדשה.
+                                </div>
+                            </li>
+                            <li class="help-step-item">
+                                <span class="help-step-number">4</span>
+                                <div class="help-step-text">
+                                    <strong>ניהול מסמכים מצורפים:</strong> סמנו תיבות בטבלה כדי לעדכן קיום מסמכים, או לחצו על כפתור <strong>ניהול קבצים (📂)</strong> כדי להעלות קבצים סרוקים (PDF/תמונות) השמורים תחת שם הקורס בתיקיית "מסמכים" שלכם.
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Section 3: Sectors -->
+                    <div class="help-guide-section">
+                        <div class="help-guide-title">
+                            <span>⚖️</span> דרישות שעות ויעדים לפי סקטורים
+                        </div>
+                        <div class="help-sector-grid">
+                            <div class="help-sector-card">
+                                <div class="help-sector-name">מהנדסים</div>
+                                <div class="help-sector-target"><strong>390 שעות סה"כ</strong><br>מתוכן לפחות 200 שעות הכשרה.<br>זכאים לגמול א' ו-ב'.</div>
+                            </div>
+                            <div class="help-sector-card">
+                                <div class="help-sector-name">אקדמאים / הנדסאים</div>
+                                <div class="help-sector-target"><strong>400 שעות סה"כ</strong><br>זכאים לגמול א' ו-ב'.</div>
+                            </div>
+                            <div class="help-sector-card">
+                                <div class="help-sector-name">מנהליים</div>
+                                <div class="help-sector-target"><strong>400 שעות סה"כ</strong><br>זכאים לגמול א' בלבד<br>(גמול ב' מוסתר אוטומטית).</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Folder structure -->
+                    <div class="help-guide-section">
+                        <div class="help-guide-title">
+                            <span>📂</span> מבנה תיקיית העבודה שלכם
+                        </div>
+                        <div style="font-size: 0.9rem; color: var(--text-muted);">
+                            בתיקייה שבחרתם המערכת מנהלת שלושה רכיבים:
+                            <br>• <span class="help-badge-inline">מעקב גמול השתלמות.xlsx</span> – קובץ האקסל המרכזי.
+                            <br>• <span class="help-badge-inline">תיקיית מסמכים</span> – תיקייה המכילה את כל הקבצים הסרוקים שהעלתם.
+                            <br>• <span class="help-badge-inline">HELP.txt</span> – קובץ הדרכה טקסטואלי מקומי.
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
@@ -1334,9 +1533,6 @@ const setupHelpBtn = document.getElementById('setup-help-btn');
 const dashboardHelpBtn = document.getElementById('dashboard-help-btn');
 
 function openHelpModal() {
-    if (helpContentArea) {
-        helpContentArea.textContent = HELP_TEXT_CONTENT;
-    }
     const helpModalContent = document.getElementById('help-modal-content');
     if (helpModalContent) {
         helpModalContent.style.position = '';
