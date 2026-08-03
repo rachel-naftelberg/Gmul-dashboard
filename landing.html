@@ -147,7 +147,7 @@
         /* Main Content Split Screen */
         .main-layout {
             display: grid;
-            grid-template-columns: 1fr 1.15fr; /* Left (screenshot) | Right (texts) */
+            grid-template-columns: 1.15fr 1fr; /* Right (texts) | Left (screenshot) */
             gap: 3.5rem;
             align-items: center;
             flex-grow: 1;
@@ -481,13 +481,6 @@
 
         <!-- Main Layout Split Screen -->
         <main class="main-layout">
-            <!-- Left Panel: Floating Screenshot Card -->
-            <div class="floating-card-wrapper">
-                <div class="floating-card">
-                    <img src="dashboard_preview.png" alt="צילום מסך המערכת">
-                </div>
-            </div>
-
             <!-- Right Panel: Hero Content -->
             <div class="hero-content">
                 <div class="brand-badge">
@@ -544,6 +537,13 @@
                     <a href="index.html" class="btn">
                         להתחלת שימוש חינם 🚀
                     </a>
+                </div>
+            </div>
+
+            <!-- Left Panel: Floating Screenshot Card -->
+            <div class="floating-card-wrapper">
+                <div class="floating-card">
+                    <img src="dashboard_preview.png" alt="צילום מסך המערכת">
                 </div>
             </div>
         </main>
