@@ -5,18 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>מעקב גמול השתלמות - הגמול שלך, השליטה שלך</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Frank+Ruhl+Libre:wght@400;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Outfit:wght@400;500;700;800&family=Frank+Ruhl+Libre:wght@700&display=swap');
 
         :root {
-            --bg-main: #F4F2EB;          /* Light soft cream background */
-            --bg-panel: #FFFFFF;          /* Pure white card panel */
-            --border-color: #D5D0C2;      /* Gentle border color */
-            --primary-color: #273827;     /* Deep forest sage green */
-            --primary-color-hover: #162416;
-            --text-main: #2C352C;
-            --text-muted: #687C68;
-            --success-color: #273827;
-            --glass-shadow: 0 8px 30px rgba(39, 56, 39, 0.05);
+            --bg-dark: #090D1A;           /* Deep space blue */
+            --bg-card: rgba(20, 28, 52, 0.65); /* Sleek glass card background */
+            --border-color: rgba(255, 255, 255, 0.08); /* Minimalist border */
+            --accent-indigo: #6366F1;     /* Electric Indigo */
+            --accent-cyan: #06B6D4;       /* Neon Cyan */
+            --accent-gradient: linear-gradient(135deg, #6366F1 0%, #3B82F6 100%);
+            --accent-cyan-gradient: linear-gradient(135deg, #06B6D4 0%, #0891B2 100%);
+            --text-light: #F3F4F6;        /* Crisp white-grey */
+            --text-dim: #9CA3AF;          /* Subdued grey */
+            --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.25);
+            --shadow-cyan-glow: 0 0 25px rgba(6, 182, 212, 0.25);
         }
 
         * {
@@ -27,23 +29,46 @@
 
         html, body {
             height: 100%;
-            overflow: hidden; /* Disable scrolling globally for a perfect fit */
+            overflow: hidden; /* Prevent scrolling entirely for laptop screen height */
         }
 
         body {
-            background-color: var(--bg-main);
-            color: var(--text-main);
+            background-color: var(--bg-dark);
+            color: var(--text-light);
             font-family: 'Assistant', sans-serif;
-            line-height: 1.5;
+            line-height: 1.45;
             direction: rtl;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            padding: 1.25rem 2rem;
-            background-image: 
-                radial-gradient(at 0% 0%, rgba(107, 124, 107, 0.04) 0px, transparent 50%),
-                radial-gradient(at 100% 100%, rgba(211, 162, 97, 0.03) 0px, transparent 50%);
+            padding: 1.5rem 2rem;
+            position: relative;
+        }
+
+        /* Abstract glowing blobs in background */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            top: -10%;
+            right: -10%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        body::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, transparent 70%);
+            bottom: -10%;
+            left: -10%;
+            z-index: 0;
+            pointer-events: none;
         }
 
         .container {
@@ -54,6 +79,7 @@
             flex-grow: 1;
             justify-content: space-between;
             gap: 1rem;
+            z-index: 1;
         }
 
         /* Header / Brand */
@@ -71,25 +97,29 @@
             align-items: center;
             gap: 0.75rem;
             text-decoration: none;
-            color: var(--primary-color);
+            color: var(--text-light);
         }
 
         .brand h1 {
-            font-family: 'Frank Ruhl Libre', serif;
-            font-size: 1.35rem;
+            font-family: 'Outfit', 'Assistant', sans-serif;
+            font-size: 1.4rem;
             font-weight: 700;
+            letter-spacing: -0.5px;
+            background: linear-gradient(135deg, #FFFFFF 0%, #D1D5DB 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .nav-logo {
-            filter: drop-shadow(0 2px 6px rgba(39, 56, 39, 0.1));
+            filter: drop-shadow(var(--shadow-glow));
             flex-shrink: 0;
         }
 
         /* Main Content Split Screen */
         .main-layout {
             display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 3rem;
+            grid-template-columns: 1.15fr 1fr;
+            gap: 3.5rem;
             align-items: center;
             flex-grow: 1;
             padding: 1rem 0;
@@ -106,12 +136,12 @@
             }
             .hero-slogan {
                 border-right: none !important;
-                border-bottom: 3px solid var(--primary-color);
+                border-bottom: 3px solid var(--accent-cyan);
                 padding-right: 0 !important;
                 padding-bottom: 0.5rem;
             }
             .hero-preview {
-                display: none; /* Hide preview mockup on very narrow screens */
+                display: none;
             }
         }
 
@@ -119,69 +149,77 @@
         .hero-content {
             display: flex;
             flex-direction: column;
-            gap: 1rem;
+            gap: 1.15rem;
         }
 
         .hero-title {
-            font-family: 'Frank Ruhl Libre', serif;
-            font-size: 2.6rem;
-            color: var(--primary-color);
-            line-height: 1.15;
-            font-weight: 700;
+            font-family: 'Outfit', 'Assistant', sans-serif;
+            font-size: 3rem;
+            line-height: 1.1;
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(to left, #FFFFFF, #E5E7EB, #9CA3AF);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .hero-slogan {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            border-right: 4px solid var(--primary-color);
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent-cyan);
+            border-right: 4px solid var(--accent-cyan);
             padding-right: 0.75rem;
             line-height: 1.3;
+            text-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
         }
 
         .hero-description {
-            font-size: 0.95rem;
-            color: var(--text-main);
-            margin-bottom: 0.25rem;
+            font-size: 0.98rem;
+            color: var(--text-dim);
+            max-width: 520px;
         }
 
-        /* Brief Bullet points styled like badges/cards */
+        /* Bullet items */
         .bullet-list {
             display: flex;
             flex-direction: column;
-            gap: 0.6rem;
+            gap: 0.65rem;
         }
 
         .bullet-item {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            color: var(--text-main);
+            gap: 0.6rem;
+            font-size: 0.92rem;
+            color: var(--text-light);
         }
 
         .bullet-icon {
-            font-size: 1.1rem;
-            background: rgba(39, 56, 39, 0.06);
-            width: 24px;
-            height: 24px;
+            font-size: 1rem;
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.2);
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            color: var(--accent-cyan);
         }
 
-        /* Left Panel: App Mockup Preview */
+        /* Left Panel: App Mockup Preview (Draggable style) */
         .hero-preview {
-            background: var(--bg-panel);
+            background: var(--bg-card);
             border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 1.25rem;
+            border-radius: 16px;
+            padding: 1.35rem;
             box-shadow: var(--glass-shadow);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             display: flex;
             flex-direction: column;
-            gap: 0.85rem;
+            gap: 0.9rem;
             position: relative;
         }
 
@@ -189,22 +227,26 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 0.6rem;
         }
 
         .preview-header h4 {
-            font-family: 'Frank Ruhl Libre', serif;
-            font-weight: bold;
-            color: var(--primary-color);
-            font-size: 0.95rem;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            color: var(--text-light);
+            font-size: 0.98rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
         }
 
         .preview-badge {
-            background: rgba(39, 56, 39, 0.08);
-            color: var(--primary-color);
-            padding: 0.15rem 0.5rem;
-            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #A5B4FC;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
             font-size: 0.75rem;
             font-weight: bold;
         }
@@ -213,35 +255,35 @@
         .mock-stats {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0.65rem;
+            gap: 0.75rem;
         }
 
         .mock-card {
             border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 0.75rem;
+            border-radius: 8px;
+            padding: 0.85rem;
             text-align: center;
-            background: #FAF9F6;
+            background: rgba(9, 13, 26, 0.6);
         }
 
         .mock-card h5 {
             font-size: 0.75rem;
-            color: var(--text-muted);
-            margin-bottom: 0.2rem;
+            color: var(--text-dim);
+            margin-bottom: 0.25rem;
             font-weight: 500;
         }
 
         .mock-card .val {
-            font-family: 'Frank Ruhl Libre', serif;
-            font-size: 1.4rem;
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.45rem;
             font-weight: 700;
-            color: var(--primary-color);
+            color: #FFFFFF;
         }
 
         .mock-progress {
-            background: #D5D0C2;
-            height: 5px;
-            border-radius: 2.5px;
+            background: rgba(255, 255, 255, 0.08);
+            height: 6px;
+            border-radius: 3px;
             width: 100%;
             margin-top: 0.4rem;
             overflow: hidden;
@@ -249,69 +291,85 @@
 
         .mock-progress-bar {
             height: 100%;
-            background: var(--primary-color);
-            border-radius: 2.5px;
+            background: var(--accent-gradient);
+            border-radius: 3px;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .mock-progress-bar.cyan {
+            background: var(--accent-cyan-gradient);
+            box-shadow: var(--shadow-cyan-glow);
         }
 
         /* Mock folder list */
         .mock-folder {
-            font-size: 0.8rem;
-            border: 1px dashed var(--border-color);
-            border-radius: 6px;
-            padding: 0.5rem 0.75rem;
-            background: #FAF9F6;
-            color: var(--text-muted);
+            font-size: 0.82rem;
+            border: 1px dashed rgba(255, 255, 255, 0.12);
+            border-radius: 8px;
+            padding: 0.6rem 0.85rem;
+            background: rgba(9, 13, 26, 0.4);
+            color: var(--text-dim);
         }
 
         .mock-folder-title {
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 0.25rem;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 0.3rem;
             display: flex;
             align-items: center;
-            gap: 0.25rem;
+            gap: 0.3rem;
         }
 
         /* Buttons & Actions */
         .hero-cta {
             display: flex;
-            gap: 0.75rem;
+            gap: 0.85rem;
             margin-top: 0.5rem;
         }
 
         .btn {
-            background: var(--primary-color);
+            background: var(--accent-gradient);
             color: white;
             border: none;
-            padding: 0.65rem 1.5rem;
+            padding: 0.75rem 1.65rem;
             border-radius: 30px;
-            font-weight: 600;
-            font-size: 0.95rem;
+            font-weight: 700;
+            font-size: 0.98rem;
             cursor: pointer;
             transition: all 0.25s ease;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            box-shadow: 0 4px 10px rgba(39, 56, 39, 0.1);
+            box-shadow: var(--shadow-glow);
         }
 
         .btn:hover {
-            background: var(--primary-color-hover);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 14px rgba(39, 56, 39, 0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.45);
+        }
+
+        .btn-cyan {
+            background: var(--accent-cyan-gradient);
+            box-shadow: var(--shadow-cyan-glow);
+        }
+
+        .btn-cyan:hover {
+            box-shadow: 0 10px 25px rgba(6, 182, 212, 0.45);
         }
 
         .btn-secondary {
             background: transparent;
-            color: var(--primary-color);
-            border: 1px solid var(--primary-color);
+            color: var(--text-light);
+            border: 1px solid rgba(255, 255, 255, 0.25);
             box-shadow: none;
         }
 
         .btn-secondary:hover {
-            background: rgba(39, 56, 39, 0.05);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--text-light);
             box-shadow: none;
+            transform: translateY(-1px);
         }
 
         /* Bottom Footer */
@@ -320,7 +378,7 @@
             border-top: 1px solid var(--border-color);
             padding-top: 0.75rem;
             text-align: center;
-            color: var(--text-muted);
+            color: var(--text-dim);
             font-size: 0.8rem;
             display: flex;
             justify-content: space-between;
@@ -328,8 +386,9 @@
         }
 
         .footer-slogan {
-            font-weight: 500;
-            color: var(--primary-color);
+            font-weight: 600;
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px rgba(6, 182, 212, 0.1);
         }
 
         /* Adjustments for smaller screen / laptop height */
@@ -338,7 +397,7 @@
                 padding: 0.75rem 1.5rem;
             }
             .hero-title {
-                font-size: 2.1rem;
+                font-size: 2.2rem;
             }
             .hero-slogan {
                 font-size: 1.15rem;
@@ -350,11 +409,14 @@
                 font-size: 0.85rem;
             }
             .mock-card .val {
-                font-size: 1.2rem;
+                font-size: 1.25rem;
             }
             .hero-preview {
-                gap: 0.65rem;
+                gap: 0.75rem;
                 padding: 1rem;
+            }
+            .main-layout {
+                gap: 2rem;
             }
         }
     </style>
@@ -365,17 +427,23 @@
         <!-- Header -->
         <header class="header">
             <a href="#" class="brand">
-                <svg class="nav-logo" width="28" height="28" viewBox="0 0 64 64" fill="none" stroke="var(--primary-color)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="nav-logo" width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#6366F1" />
+                            <stop offset="100%" stop-color="#06B6D4" />
+                        </linearGradient>
+                    </defs>
                     <path d="M32 58C32 58 32 30 32 14" />
-                    <path d="M32 14C35 8 40 8 42 16C40 22 35 20 32 20" fill="rgba(39, 56, 39, 0.1)" />
-                    <path d="M32 28C38 24 46 26 48 34C42 38 36 32 32 32" fill="rgba(39, 56, 39, 0.1)" />
-                    <path d="M32 34C26 30 18 32 16 40C22 44 28 38 32 38" fill="rgba(39, 56, 39, 0.1)" />
-                    <path d="M32 42C37 39 42 41 44 47C40 50 36 46 32 45" fill="rgba(39, 56, 39, 0.1)" />
-                    <path d="M32 46C27 43 22 45 20 51C24 54 28 50 32 49" fill="rgba(39, 56, 39, 0.1)" />
+                    <path d="M32 14C35 8 40 8 42 16C40 22 35 20 32 20" fill="rgba(6, 182, 212, 0.15)" />
+                    <path d="M32 28C38 24 46 26 48 34C42 38 36 32 32 32" fill="rgba(6, 182, 212, 0.15)" />
+                    <path d="M32 34C26 30 18 32 16 40C22 44 28 38 32 38" fill="rgba(6, 182, 212, 0.15)" />
+                    <path d="M32 42C37 39 42 41 44 47C40 50 36 46 32 45" fill="rgba(6, 182, 212, 0.15)" />
+                    <path d="M32 46C27 43 22 45 20 51C24 54 28 50 32 49" fill="rgba(6, 182, 212, 0.15)" />
                 </svg>
                 <h1>מעקב גמול השתלמות</h1>
             </a>
-            <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: bold; background: rgba(39, 56, 39, 0.05); padding: 0.25rem 0.75rem; border-radius: 12px;">גרסה 1.2</span>
+            <span style="font-size: 0.8rem; color: #A5B4FC; font-weight: bold; background: rgba(99, 102, 241, 0.12); border: 1px solid rgba(99, 102, 241, 0.25); padding: 0.2rem 0.6rem; border-radius: 12px;">מערכת מקומית מאובטחת</span>
         </header>
 
         <!-- Main Layout Split Screen -->
@@ -387,25 +455,25 @@
                     "מעקב שעות השתלמות, 100% בפרטיות שלך."
                 </div>
                 <p class="hero-description">
-                    הכירו את המערכת החכמה והבטוחה לחישוב וניהול שעות ההשתלמות והקורסים שלכם. מחובר ישירות לקובץ האקסל המקומי שלכם במחשב, ללא שרתים חיצוניים וללא פגיעה בפרטיות.
+                    הכירו את המערכת המתקדמת לחישוב וניהול שעות ההשתלמות והקורסים שלכם. מחובר ישירות לקובץ האקסל המקומי שלכם במחשב, ללא שרתים חיצוניים וללא פגיעה בפרטיות.
                 </p>
                 <div class="bullet-list">
                     <div class="bullet-item">
                         <span class="bullet-icon">🔒</span>
-                        <span><strong>100% פרטיות (Local-First):</strong> הנתונים והמסמכים שלכם נשארים אך ורק במחשב שלכם.</span>
+                        <span><strong>100% פרטיות (Local-First):</strong> הנתונים והמסמכים שלכם נשארים אך ורק במחשב האישי שלכם.</span>
                     </div>
                     <div class="bullet-item">
-                        <span class="bullet-icon">📊</span>
-                        <span><strong>סנכרון ישיר לאקסל:</strong> המערכת קוראת וכותבת ישירות לקובץ האקסל המקומי שלכם במחשב.</span>
+                        <span class="bullet-icon">⚡</span>
+                        <span><strong>סנכרון ישיר לאקסל:</strong> כתיבה ועדכון קובץ האקסל המקומי שלכם במחשב בזמן אמת.</span>
                     </div>
                     <div class="bullet-item">
-                        <span class="bullet-icon">⚖️</span>
-                        <span><strong>חוקי סקטורים מובנים:</strong> חישוב יעדים ומגבלות אוטומטי (מהנדסים, אקדמאים, מנהליים).</span>
+                        <span class="bullet-icon">⚙️</span>
+                        <span><strong>חוקי סקטורים מובנים:</strong> חישוב יעדים אוטומטי (מהנדסים, אקדמאים, מנהליים).</span>
                     </div>
                 </div>
                 <div class="hero-cta">
-                    <a href="index.html" class="btn">
-                        להתחלת שימוש חינם 🌿
+                    <a href="index.html" class="btn btn-cyan">
+                        להתחלת שימוש חינם 🚀
                     </a>
                     <a href="index.html" class="btn btn-secondary">
                         כניסה למערכת
@@ -413,37 +481,37 @@
                 </div>
             </div>
 
-            <!-- Preview panel -->
+            <!-- Preview panel (Sleek Dark Dashboard Mockup) -->
             <div class="hero-preview">
                 <div class="preview-header">
-                    <h4>תצוגת המערכת</h4>
+                    <h4>📊 תצוגת דאשבורד השעות</h4>
                     <span class="preview-badge">סקטור: מהנדסים</span>
                 </div>
                 <div class="mock-stats">
                     <div class="mock-card">
                         <h5>שעות שבוצעו (גמול א')</h5>
-                        <div class="val">240 / 390</div>
+                        <div class="val" style="color: var(--accent-cyan); text-shadow: 0 0 10px rgba(6, 182, 212, 0.25);">240 / 390</div>
                         <div class="mock-progress">
-                            <div class="mock-progress-bar" style="width: 61%;"></div>
+                            <div class="mock-progress-bar cyan" style="width: 61%;"></div>
                         </div>
                     </div>
                     <div class="mock-card">
                         <h5>מתוכן קורסי הכשרה</h5>
-                        <div class="val">140 / 200</div>
+                        <div class="val" style="color: var(--accent-indigo); text-shadow: 0 0 10px rgba(99, 102, 241, 0.25);">140 / 200</div>
                         <div class="mock-progress">
-                            <div class="mock-progress-bar" style="width: 70%; background: #99621E;"></div>
+                            <div class="mock-progress-bar" style="width: 70%;"></div>
                         </div>
                     </div>
                 </div>
                 <div class="mock-folder">
-                    <div class="mock-folder-title">📂 מבנה תיקיית העבודה שלכם:</div>
-                    <div style="padding-right: 0.5rem; line-height: 1.4;">
-                        • 📄 <strong>מעקב גמול השתלמות.xlsx</strong> (סנכרון ישיר)<br>
-                        • 📁 <strong>מסמכים/</strong> (תעודות, סילבוסים ואישורי PDF)
+                    <div class="mock-folder-title">📁 תיקיית העבודה במחשב שלך:</div>
+                    <div style="padding-right: 0.5rem; line-height: 1.45;">
+                        • 📊 <strong>מעקב גמול השתלמות.xlsx</strong> (מעודכן ישירות)<br>
+                        • 📂 <strong>מסמכים/</strong> (תעודות, סילבוסים ואישורי PDF)
                     </div>
                 </div>
-                <div style="font-size: 0.8rem; background: rgba(39, 56, 39, 0.04); padding: 0.5rem; border-radius: 6px; text-align: center; color: var(--text-muted); border: 1px dashed var(--border-color);">
-                    🔒 <strong>אבטחה מלאה:</strong> המערכת פועלת בדפדפן ללא תקשורת שרתים.
+                <div style="font-size: 0.8rem; background: rgba(6, 182, 212, 0.05); padding: 0.5rem; border-radius: 6px; text-align: center; color: var(--accent-cyan); border: 1px dashed rgba(6, 182, 212, 0.25);">
+                    🔒 <strong>פרטיות מלאה:</strong> המערכת פועלת בדפדפן ללא העלאת קבצים לאינטרנט.
                 </div>
             </div>
         </main>
