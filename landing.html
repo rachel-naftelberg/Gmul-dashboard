@@ -25,36 +25,45 @@
             padding: 0;
         }
 
+        html, body {
+            height: 100%;
+            overflow: hidden; /* Disable scrolling globally for a perfect fit */
+        }
+
         body {
             background-color: var(--bg-main);
             color: var(--text-main);
             font-family: 'Assistant', sans-serif;
-            line-height: 1.6;
-            min-height: 100vh;
+            line-height: 1.5;
             direction: rtl;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: space-between;
+            padding: 1.25rem 2rem;
             background-image: 
                 radial-gradient(at 0% 0%, rgba(107, 124, 107, 0.04) 0px, transparent 50%),
                 radial-gradient(at 100% 100%, rgba(211, 162, 97, 0.03) 0px, transparent 50%);
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             width: 100%;
-            padding: 0 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+            gap: 1rem;
         }
 
-        /* Navbar */
-        .navbar {
+        /* Header / Brand */
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1.5rem 0;
             width: 100%;
             border-bottom: 1px solid var(--border-color);
-            margin-bottom: 3rem;
+            padding-bottom: 0.75rem;
         }
 
         .brand {
@@ -67,7 +76,7 @@
 
         .brand h1 {
             font-family: 'Frank Ruhl Libre', serif;
-            font-size: 1.5rem;
+            font-size: 1.35rem;
             font-weight: 700;
         }
 
@@ -76,28 +85,221 @@
             flex-shrink: 0;
         }
 
-        /* Buttons */
+        /* Main Content Split Screen */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            flex-grow: 1;
+            padding: 1rem 0;
+        }
+
+        @media (max-width: 850px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+                text-align: center;
+            }
+            .hero-cta {
+                justify-content: center;
+            }
+            .hero-slogan {
+                border-right: none !important;
+                border-bottom: 3px solid var(--primary-color);
+                padding-right: 0 !important;
+                padding-bottom: 0.5rem;
+            }
+            .hero-preview {
+                display: none; /* Hide preview mockup on very narrow screens */
+            }
+        }
+
+        /* Right Panel: Content */
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .hero-title {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 2.6rem;
+            color: var(--primary-color);
+            line-height: 1.15;
+            font-weight: 700;
+        }
+
+        .hero-slogan {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-right: 4px solid var(--primary-color);
+            padding-right: 0.75rem;
+            line-height: 1.3;
+        }
+
+        .hero-description {
+            font-size: 0.95rem;
+            color: var(--text-main);
+            margin-bottom: 0.25rem;
+        }
+
+        /* Brief Bullet points styled like badges/cards */
+        .bullet-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .bullet-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: var(--text-main);
+        }
+
+        .bullet-icon {
+            font-size: 1.1rem;
+            background: rgba(39, 56, 39, 0.06);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* Left Panel: App Mockup Preview */
+        .hero-preview {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem;
+            box-shadow: var(--glass-shadow);
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            position: relative;
+        }
+
+        .preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .preview-header h4 {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 0.95rem;
+        }
+
+        .preview-badge {
+            background: rgba(39, 56, 39, 0.08);
+            color: var(--primary-color);
+            padding: 0.15rem 0.5rem;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        /* Mock stats inside mockup */
+        .mock-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.65rem;
+        }
+
+        .mock-card {
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 0.75rem;
+            text-align: center;
+            background: #FAF9F6;
+        }
+
+        .mock-card h5 {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.2rem;
+            font-weight: 500;
+        }
+
+        .mock-card .val {
+            font-family: 'Frank Ruhl Libre', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .mock-progress {
+            background: #D5D0C2;
+            height: 5px;
+            border-radius: 2.5px;
+            width: 100%;
+            margin-top: 0.4rem;
+            overflow: hidden;
+        }
+
+        .mock-progress-bar {
+            height: 100%;
+            background: var(--primary-color);
+            border-radius: 2.5px;
+        }
+
+        /* Mock folder list */
+        .mock-folder {
+            font-size: 0.8rem;
+            border: 1px dashed var(--border-color);
+            border-radius: 6px;
+            padding: 0.5rem 0.75rem;
+            background: #FAF9F6;
+            color: var(--text-muted);
+        }
+
+        .mock-folder-title {
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Buttons & Actions */
+        .hero-cta {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 0.5rem;
+        }
+
         .btn {
             background: var(--primary-color);
             color: white;
             border: none;
-            padding: 0.75rem 1.75rem;
+            padding: 0.65rem 1.5rem;
             border-radius: 30px;
             font-weight: 600;
-            font-size: 1rem;
+            font-size: 0.95rem;
             cursor: pointer;
             transition: all 0.25s ease;
             text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            box-shadow: 0 4px 12px rgba(39, 56, 39, 0.12);
+            box-shadow: 0 4px 10px rgba(39, 56, 39, 0.1);
         }
 
         .btn:hover {
             background: var(--primary-color-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(39, 56, 39, 0.2);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(39, 56, 39, 0.15);
         }
 
         .btn-secondary {
@@ -109,315 +311,61 @@
 
         .btn-secondary:hover {
             background: rgba(39, 56, 39, 0.05);
-            color: var(--primary-color-hover);
-            border-color: var(--primary-color-hover);
             box-shadow: none;
         }
 
-        /* Hero Section */
-        .hero {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 3rem;
-            align-items: center;
-            margin-bottom: 5rem;
-        }
-
-        @media (max-width: 900px) {
-            .hero {
-                grid-template-columns: 1fr;
-                text-align: center;
-                gap: 2rem;
-            }
-            .hero-cta {
-                justify-content: center;
-            }
-        }
-
-        .hero-content {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-        }
-
-        .hero-title {
-            font-family: 'Frank Ruhl Libre', serif;
-            font-size: 3rem;
-            color: var(--primary-color);
-            line-height: 1.2;
-            font-weight: 700;
-        }
-
-        .hero-slogan {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            border-right: 4px solid var(--primary-color);
-            padding-right: 1rem;
-            line-height: 1.4;
-        }
-
-        .hero-description {
-            font-size: 1.1rem;
-            color: var(--text-main);
-            max-width: 600px;
-        }
-
-        .hero-cta {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
-        }
-
-        /* Interactive Dashboard Preview Wrapper */
-        .hero-preview {
-            background: var(--bg-panel);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 1.5rem;
-            box-shadow: var(--glass-shadow);
-            position: relative;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        /* Mock Stats */
-        .mock-stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
-        }
-
-        .mock-stat-card {
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1rem;
-            text-align: center;
-            background: #FAF9F6;
-        }
-
-        .mock-stat-card h4 {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            margin-bottom: 0.25rem;
-        }
-
-        .mock-stat-card .val {
-            font-family: 'Frank Ruhl Libre', serif;
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-
-        .mock-progress {
-            background: #D5D0C2;
-            height: 6px;
-            border-radius: 3px;
-            width: 100%;
-            margin-top: 0.5rem;
-            overflow: hidden;
-        }
-
-        .mock-progress-bar {
-            height: 100%;
-            background: var(--primary-color);
-            border-radius: 3px;
-        }
-
-        /* Features Section */
-        .section-title {
-            font-family: 'Frank Ruhl Libre', serif;
-            font-size: 2.2rem;
-            color: var(--primary-color);
-            text-align: center;
-            margin-bottom: 3rem;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 3px;
-            background: var(--primary-color);
-            margin: 0.75rem auto 0;
-            border-radius: 2px;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 2rem;
-            margin-bottom: 6rem;
-        }
-
-        .feature-card {
-            background: var(--bg-panel);
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
-            padding: 2rem;
-            box-shadow: var(--glass-shadow);
-            transition: all 0.3s ease;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--primary-color);
-            box-shadow: 0 12px 40px rgba(39, 56, 39, 0.1);
-        }
-
-        .feature-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(39, 56, 39, 0.05);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            color: var(--primary-color);
-        }
-
-        .feature-card h3 {
-            font-family: 'Frank Ruhl Libre', serif;
-            font-size: 1.25rem;
-            color: var(--primary-color);
-            font-weight: 700;
-        }
-
-        .feature-card p {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-        }
-
-        /* How it works */
-        .steps {
-            background: rgba(39, 56, 39, 0.03);
-            width: 100vw;
-            padding: 5rem 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            border-top: 1px solid var(--border-color);
-            border-bottom: 1px solid var(--border-color);
-            margin-bottom: 5rem;
-        }
-
-        .steps-container {
-            max-width: 1200px;
-            width: 100%;
-            padding: 0 1.5rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2.5rem;
-        }
-
-        .step-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            gap: 1rem;
-            position: relative;
-        }
-
-        .step-number {
-            background: var(--primary-color);
-            color: white;
-            font-size: 1.2rem;
-            font-weight: 700;
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 10px rgba(39, 56, 39, 0.15);
-        }
-
-        .step-item h4 {
-            font-family: 'Frank Ruhl Libre', serif;
-            font-size: 1.2rem;
-            color: var(--primary-color);
-            font-weight: 700;
-        }
-
-        .step-item p {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            max-width: 260px;
-        }
-
-        /* Call To Action Banner */
-        .cta-banner {
-            background: var(--bg-panel);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 3rem 2rem;
-            text-align: center;
-            box-shadow: var(--glass-shadow);
-            margin-bottom: 6rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-banner h2 {
-            font-family: 'Frank Ruhl Libre', serif;
-            font-size: 2.2rem;
-            color: var(--primary-color);
-            font-weight: 700;
-            max-width: 700px;
-        }
-
-        .cta-banner p {
-            font-size: 1.1rem;
-            color: var(--text-muted);
-            max-width: 600px;
-        }
-
-        /* Footer */
+        /* Bottom Footer */
         .footer {
             width: 100%;
             border-top: 1px solid var(--border-color);
-            padding: 2rem 0;
+            padding-top: 0.75rem;
             text-align: center;
             color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-top: auto;
+            font-size: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .footer-logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-bottom: 0.75rem;
+        .footer-slogan {
+            font-weight: 500;
             color: var(--primary-color);
-            font-family: 'Frank Ruhl Libre', serif;
-            font-weight: 700;
-            font-size: 1.1rem;
+        }
+
+        /* Adjustments for smaller screen / laptop height */
+        @media (max-height: 700px) {
+            body {
+                padding: 0.75rem 1.5rem;
+            }
+            .hero-title {
+                font-size: 2.1rem;
+            }
+            .hero-slogan {
+                font-size: 1.15rem;
+            }
+            .hero-description {
+                font-size: 0.9rem;
+            }
+            .bullet-item {
+                font-size: 0.85rem;
+            }
+            .mock-card .val {
+                font-size: 1.2rem;
+            }
+            .hero-preview {
+                gap: 0.65rem;
+                padding: 1rem;
+            }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Navbar -->
-        <nav class="navbar">
+        <!-- Header -->
+        <header class="header">
             <a href="#" class="brand">
-                <svg class="nav-logo" width="32" height="32" viewBox="0 0 64 64" fill="none" stroke="var(--primary-color)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="nav-logo" width="28" height="28" viewBox="0 0 64 64" fill="none" stroke="var(--primary-color)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M32 58C32 58 32 30 32 14" />
                     <path d="M32 14C35 8 40 8 42 16C40 22 35 20 32 20" fill="rgba(39, 56, 39, 0.1)" />
                     <path d="M32 28C38 24 46 26 48 34C42 38 36 32 32 32" fill="rgba(39, 56, 39, 0.1)" />
@@ -427,138 +375,85 @@
                 </svg>
                 <h1>מעקב גמול השתלמות</h1>
             </a>
-            <a href="index.html" class="btn btn-secondary">כניסה למערכת</a>
-        </nav>
+            <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: bold; background: rgba(39, 56, 39, 0.05); padding: 0.25rem 0.75rem; border-radius: 12px;">גרסה 1.2</span>
+        </header>
 
-        <!-- Hero Section -->
-        <section class="hero">
+        <!-- Main Layout Split Screen -->
+        <main class="main-layout">
+            <!-- Content Panel -->
             <div class="hero-content">
                 <h2 class="hero-title">הגמול שלך,<br>השליטה שלך.</h2>
                 <div class="hero-slogan">
                     "מעקב שעות השתלמות, 100% בפרטיות שלך."
                 </div>
                 <p class="hero-description">
-                    הכירו את המערכת החכמה והבטוחה לחישוב וניהול שעות ההשתלמות והקורסים שלכם. מחובר ישירות לקובץ האקסל המקומי שלכם במחשב, ללא העלאת קבצים לרשת וללא סיכון הפרטיות שלכם.
+                    הכירו את המערכת החכמה והבטוחה לחישוב וניהול שעות ההשתלמות והקורסים שלכם. מחובר ישירות לקובץ האקסל המקומי שלכם במחשב, ללא שרתים חיצוניים וללא פגיעה בפרטיות.
                 </p>
+                <div class="bullet-list">
+                    <div class="bullet-item">
+                        <span class="bullet-icon">🔒</span>
+                        <span><strong>100% פרטיות (Local-First):</strong> הנתונים והמסמכים שלכם נשארים אך ורק במחשב שלכם.</span>
+                    </div>
+                    <div class="bullet-item">
+                        <span class="bullet-icon">📊</span>
+                        <span><strong>סנכרון ישיר לאקסל:</strong> המערכת קוראת וכותבת ישירות לקובץ האקסל המקומי שלכם במחשב.</span>
+                    </div>
+                    <div class="bullet-item">
+                        <span class="bullet-icon">⚖️</span>
+                        <span><strong>חוקי סקטורים מובנים:</strong> חישוב יעדים ומגבלות אוטומטי (מהנדסים, אקדמאים, מנהליים).</span>
+                    </div>
+                </div>
                 <div class="hero-cta">
                     <a href="index.html" class="btn">
                         להתחלת שימוש חינם 🌿
                     </a>
-                    <a href="#how-it-works" class="btn btn-secondary">
-                        איך זה עובד?
+                    <a href="index.html" class="btn btn-secondary">
+                        כניסה למערכת
                     </a>
                 </div>
             </div>
-            
-            <!-- Visual Mockup -->
+
+            <!-- Preview panel -->
             <div class="hero-preview">
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.75rem;">
-                    <div style="font-family: 'Frank Ruhl Libre', serif; font-weight: bold; color: var(--primary-color);">דאשבורד מעקב שעות</div>
-                    <span style="background: rgba(39, 56, 39, 0.08); color: var(--primary-color); padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.8rem; font-weight: bold;">סקטור: מהנדסים</span>
+                <div class="preview-header">
+                    <h4>תצוגת המערכת</h4>
+                    <span class="preview-badge">סקטור: מהנדסים</span>
                 </div>
-                <div class="mock-stats-grid">
-                    <div class="mock-stat-card">
-                        <h4>שעות שבוצעו (גמול א')</h4>
+                <div class="mock-stats">
+                    <div class="mock-card">
+                        <h5>שעות שבוצעו (גמול א')</h5>
                         <div class="val">240 / 390</div>
                         <div class="mock-progress">
                             <div class="mock-progress-bar" style="width: 61%;"></div>
                         </div>
                     </div>
-                    <div class="mock-stat-card">
-                        <h4>מתוכן קורסי הכשרה</h4>
+                    <div class="mock-card">
+                        <h5>מתוכן קורסי הכשרה</h5>
                         <div class="val">140 / 200</div>
                         <div class="mock-progress">
                             <div class="mock-progress-bar" style="width: 70%; background: #99621E;"></div>
                         </div>
                     </div>
                 </div>
-                <div style="border: 1px dashed var(--border-color); border-radius: 8px; padding: 0.75rem; font-size: 0.85rem; background: #FAF9F6; text-align: center; color: var(--text-muted);">
-                    🔒 <strong>100% Local-First:</strong> נשמר ומסונכרן אוטומטית לקובץ האקסל המקומי שלכם במחשב.
+                <div class="mock-folder">
+                    <div class="mock-folder-title">📂 מבנה תיקיית העבודה שלכם:</div>
+                    <div style="padding-right: 0.5rem; line-height: 1.4;">
+                        • 📄 <strong>מעקב גמול השתלמות.xlsx</strong> (סנכרון ישיר)<br>
+                        • 📁 <strong>מסמכים/</strong> (תעודות, סילבוסים ואישורי PDF)
+                    </div>
+                </div>
+                <div style="font-size: 0.8rem; background: rgba(39, 56, 39, 0.04); padding: 0.5rem; border-radius: 6px; text-align: center; color: var(--text-muted); border: 1px dashed var(--border-color);">
+                    🔒 <strong>אבטחה מלאה:</strong> המערכת פועלת בדפדפן ללא תקשורת שרתים.
                 </div>
             </div>
-        </section>
+        </main>
 
-        <!-- Features Section -->
-        <section>
-            <h2 class="section-title">למה תאהבו את המערכת?</h2>
-            <div class="features-grid">
-                <!-- Feature 1 -->
-                <div class="feature-card">
-                    <div class="feature-icon">🔒</div>
-                    <h3>פרטיות מוחלטת</h3>
-                    <p>הנתונים שלכם לא מועלים לאף שרת חיצוני ברשת. החישובים, הקבצים וקובץ האקסל נשמרים ומעובדים אך ורק על גבי המחשב האישי שלכם.</p>
-                </div>
-                <!-- Feature 2 -->
-                <div class="feature-card">
-                    <div class="feature-icon">📊</div>
-                    <h3>חיבור ישיר לאקסל</h3>
-                    <p>אין צורך להקליד שוב. המערכת קוראת, מעדכנת וכותבת ישירות אל תוך קובץ האקסל המקומי שלכם במחשב בזמן אמת.</p>
-                </div>
-                <!-- Feature 3 -->
-                <div class="feature-card">
-                    <div class="feature-icon">⚖️</div>
-                    <h3>חוקי סקטורים מובנים</h3>
-                    <p>בין אם אתם מהנדסים, אקדמאים, הנדסאים או מנהליים – המערכת יודעת אוטומטית לחשב את היעדים והמגבלות של הסקטור שלכם.</p>
-                </div>
-                <!-- Feature 4 -->
-                <div class="feature-card">
-                    <div class="feature-icon">📂</div>
-                    <h3>סדר וארגון במסמכים</h3>
-                    <p>ניהול תיוק קבצי התעודות, הסילבוסים ואישורי משרד החינוך בקלות ישירות מתוך הטבלה, עם שמירה אוטומטית בתיקיות מסודרות.</p>
-                </div>
-            </div>
-        </section>
+        <!-- Footer -->
+        <footer class="footer">
+            <span class="footer-slogan">"הגמול שלך, השליטה שלך. מעקב שעות השתלמות, 100% בפרטיות שלך."</span>
+            <span>© כל הזכויות שמורות לרחל נפתלברג</span>
+        </footer>
     </div>
-
-    <!-- Steps Section -->
-    <section class="steps" id="how-it-works">
-        <h2 class="section-title">איך זה עובד? ב-3 שלבים פשוטים</h2>
-        <div class="steps-container">
-            <div class="step-item">
-                <div class="step-number">1</div>
-                <h4>בחירת סקטור מקצועי</h4>
-                <p>בוחרים את הסקטור שלכם (למשל: מהנדסים) כדי שהמערכת תתאים עבורכם את יעדי השעות באופן מדויק.</p>
-            </div>
-            <div class="step-item">
-                <div class="step-number">2</div>
-                <h4>חיבור תיקיית הנתונים</h4>
-                <p>בוחרים את התיקייה במחשב שלכם. המערכת תסרוק אותה ותייצר עבורכם קובץ אקסל חדש ומעוצב במידה והתיקייה ריקה.</p>
-            </div>
-            <div class="step-item">
-                <div class="step-number">3</div>
-                <h4>הזנת קורסים ומסמכים</h4>
-                <p>מזינים קורסים חדשים, מעדכנים קיום מסמכים, ורואים את מדדי ההתקדמות נצבעים ומתעדכנים לקראת הזכאות לגמול!</p>
-            </div>
-        </div>
-    </section>
-
-    <div class="container">
-        <!-- CTA Banner -->
-        <section class="cta-banner">
-            <h2>קחו שליטה מלאה על שעות הגמול שלכם כבר עכשיו</h2>
-            <p>הצטרפו לשיטה החכמה, המהירה והבטוחה ביותר למעקב וחישוב שעות השתלמות, ללא הרשמה וללא תשלום.</p>
-            <a href="index.html" class="btn">
-                התחילו להשתמש במערכת בחינם 🌿
-            </a>
-        </section>
-    </div>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-logo">
-            <svg width="24" height="24" viewBox="0 0 64 64" fill="none" stroke="var(--primary-color)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M32 58C32 58 32 30 32 14" />
-                <path d="M32 14C35 8 40 8 42 16C40 22 35 20 32 20" fill="rgba(39, 56, 39, 0.1)" />
-                <path d="M32 28C38 24 46 26 48 34C42 38 36 32 32 32" fill="rgba(39, 56, 39, 0.1)" />
-                <path d="M32 34C26 30 18 32 16 40C22 44 28 38 32 38" fill="rgba(39, 56, 39, 0.1)" />
-                <path d="M32 42C37 39 42 41 44 47C40 50 36 46 32 45" fill="rgba(39, 56, 39, 0.1)" />
-                <path d="M32 46C27 43 22 45 20 51C24 54 28 50 32 49" fill="rgba(39, 56, 39, 0.1)" />
-            </svg>
-            <span>מעקב גמול השתלמות</span>
-        </div>
-        <p style="margin-bottom: 0.5rem; font-weight: 500;">"הגמול שלך, השליטה שלך. מעקב שעות השתלמות, 100% בפרטיות שלך."</p>
-        <p>© כל הזכויות שמורות לרחל נפתלברג</p>
-    </footer>
 
 </body>
 </html>
