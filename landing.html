@@ -3,22 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>מעקב גמול השתלמות - הגמול שלך, השליטה שלך</title>
+    <title>GemulPro - השליטה על הגמול. הכל אצלך.</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Outfit:wght@400;500;700;800&family=Frank+Ruhl+Libre:wght@700&display=swap');
 
         :root {
-            --bg-dark: #090D1A;           /* Deep space blue */
-            --bg-card: rgba(20, 28, 52, 0.65); /* Sleek glass card background */
+            --bg-dark: #080D1A;           /* Deep space blue */
+            --bg-card: rgba(20, 28, 52, 0.4); /* Sleek glass card background */
             --border-color: rgba(255, 255, 255, 0.08); /* Minimalist border */
             --accent-indigo: #6366F1;     /* Electric Indigo */
-            --accent-cyan: #06B6D4;       /* Neon Cyan */
+            --accent-cyan: #00d2ff;       /* Neon Cyan */
             --accent-gradient: linear-gradient(135deg, #6366F1 0%, #3B82F6 100%);
-            --accent-cyan-gradient: linear-gradient(135deg, #06B6D4 0%, #0891B2 100%);
+            --accent-cyan-gradient: linear-gradient(135deg, #00d2ff 0%, #0891B2 100%);
             --text-light: #F3F4F6;        /* Crisp white-grey */
             --text-dim: #9CA3AF;          /* Subdued grey */
             --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.25);
-            --shadow-cyan-glow: 0 0 25px rgba(6, 182, 212, 0.25);
+            --shadow-cyan-glow: 0 0 25px rgba(0, 210, 255, 0.25);
+            --glass-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
         }
 
         * {
@@ -29,7 +30,7 @@
 
         html, body {
             height: 100%;
-            overflow: hidden; /* Prevent scrolling entirely for laptop screen height */
+            overflow: hidden; /* Disable scrollbar for 14 inch screens */
         }
 
         body {
@@ -42,17 +43,20 @@
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
-            padding: 1.5rem 2rem;
+            padding: 1.5rem 2.5rem;
             position: relative;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.08) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(0, 210, 255, 0.06) 0px, transparent 50%);
         }
 
         /* Abstract glowing blobs in background */
         body::before {
             content: '';
             position: absolute;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
             top: -10%;
             right: -10%;
             z-index: 0;
@@ -62,9 +66,9 @@
         body::after {
             content: '';
             position: absolute;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, transparent 70%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(0, 210, 255, 0.08) 0%, transparent 70%);
             bottom: -10%;
             left: -10%;
             z-index: 0;
@@ -72,13 +76,13 @@
         }
 
         .container {
-            max-width: 1100px;
+            max-width: 1200px;
             width: 100%;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
             justify-content: space-between;
-            gap: 1rem;
+            gap: 1.25rem;
             z-index: 1;
         }
 
@@ -95,53 +99,75 @@
         .brand {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.5rem;
             text-decoration: none;
             color: var(--text-light);
         }
 
         .brand h1 {
             font-family: 'Outfit', 'Assistant', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            background: linear-gradient(135deg, #FFFFFF 0%, #D1D5DB 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #FFFFFF;
         }
 
-        .nav-logo {
-            filter: drop-shadow(var(--shadow-glow));
-            flex-shrink: 0;
+        .brand .pro-text {
+            color: var(--accent-cyan);
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.3);
+        }
+
+        .brand-logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: rgba(0, 210, 255, 0.1);
+            border-radius: 8px;
+            border: 1px solid rgba(0, 210, 255, 0.25);
+            box-shadow: var(--shadow-cyan-glow);
+        }
+
+        .nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 1.05rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-cyan);
+            transform: translateX(-3px);
         }
 
         /* Main Content Split Screen */
         .main-layout {
             display: grid;
-            grid-template-columns: 1.15fr 1fr;
+            grid-template-columns: 1fr 1.15fr; /* Left (screenshot) | Right (texts) */
             gap: 3.5rem;
             align-items: center;
             flex-grow: 1;
             padding: 1rem 0;
         }
 
-        @media (max-width: 850px) {
+        @media (max-width: 900px) {
             .main-layout {
                 grid-template-columns: 1fr;
-                gap: 1.5rem;
+                gap: 2rem;
                 text-align: center;
             }
             .hero-cta {
                 justify-content: center;
             }
-            .hero-slogan {
-                border-right: none !important;
-                border-bottom: 3px solid var(--accent-cyan);
-                padding-right: 0 !important;
-                padding-bottom: 0.5rem;
+            .brand-badge {
+                align-self: center !important;
             }
-            .hero-preview {
-                display: none;
+            .floating-card-wrapper {
+                margin: 0 auto;
             }
         }
 
@@ -149,186 +175,56 @@
         .hero-content {
             display: flex;
             flex-direction: column;
-            gap: 1.15rem;
+            gap: 1.1rem;
+        }
+
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid rgba(0, 210, 255, 0.25);
+            color: var(--accent-cyan);
+            padding: 0.35rem 0.9rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            width: fit-content;
+            align-self: flex-start;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.08);
         }
 
         .hero-title {
             font-family: 'Outfit', 'Assistant', sans-serif;
-            font-size: 3rem;
+            font-size: 3.2rem;
             line-height: 1.1;
             font-weight: 800;
-            letter-spacing: -1px;
-            background: linear-gradient(to left, #FFFFFF, #E5E7EB, #9CA3AF);
+            color: #FFFFFF;
+            letter-spacing: -0.5px;
+        }
+
+        .hero-title span {
+            background: linear-gradient(135deg, #6366F1, #00d2ff);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        .hero-slogan {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--accent-cyan);
-            border-right: 4px solid var(--accent-cyan);
-            padding-right: 0.75rem;
-            line-height: 1.3;
-            text-shadow: 0 0 15px rgba(6, 182, 212, 0.2);
-        }
-
         .hero-description {
-            font-size: 0.98rem;
+            font-size: 1.05rem;
             color: var(--text-dim);
-            max-width: 520px;
-        }
-
-        /* Bullet items */
-        .bullet-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.65rem;
-        }
-
-        .bullet-item {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            font-size: 0.92rem;
-            color: var(--text-light);
-        }
-
-        .bullet-icon {
-            font-size: 1rem;
-            background: rgba(6, 182, 212, 0.1);
-            border: 1px solid rgba(6, 182, 212, 0.2);
-            width: 26px;
-            height: 26px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            color: var(--accent-cyan);
-        }
-
-        /* Left Panel: App Mockup Preview (Draggable style) */
-        .hero-preview {
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 1.35rem;
-            box-shadow: var(--glass-shadow);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            display: flex;
-            flex-direction: column;
-            gap: 0.9rem;
-            position: relative;
-        }
-
-        .preview-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            padding-bottom: 0.6rem;
-        }
-
-        .preview-header h4 {
-            font-family: 'Outfit', sans-serif;
-            font-weight: 700;
-            color: var(--text-light);
-            font-size: 0.98rem;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .preview-badge {
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            color: #A5B4FC;
-            padding: 0.2rem 0.6rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: bold;
-        }
-
-        /* Mock stats inside mockup */
-        .mock-stats {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
-        }
-
-        .mock-card {
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 0.85rem;
-            text-align: center;
-            background: rgba(9, 13, 26, 0.6);
-        }
-
-        .mock-card h5 {
-            font-size: 0.75rem;
-            color: var(--text-dim);
-            margin-bottom: 0.25rem;
-            font-weight: 500;
-        }
-
-        .mock-card .val {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.45rem;
-            font-weight: 700;
-            color: #FFFFFF;
-        }
-
-        .mock-progress {
-            background: rgba(255, 255, 255, 0.08);
-            height: 6px;
-            border-radius: 3px;
-            width: 100%;
-            margin-top: 0.4rem;
-            overflow: hidden;
-        }
-
-        .mock-progress-bar {
-            height: 100%;
-            background: var(--accent-gradient);
-            border-radius: 3px;
-            box-shadow: var(--shadow-glow);
-        }
-
-        .mock-progress-bar.cyan {
-            background: var(--accent-cyan-gradient);
-            box-shadow: var(--shadow-cyan-glow);
-        }
-
-        /* Mock folder list */
-        .mock-folder {
-            font-size: 0.82rem;
-            border: 1px dashed rgba(255, 255, 255, 0.12);
-            border-radius: 8px;
-            padding: 0.6rem 0.85rem;
-            background: rgba(9, 13, 26, 0.4);
-            color: var(--text-dim);
-        }
-
-        .mock-folder-title {
-            font-weight: 700;
-            color: var(--text-light);
-            margin-bottom: 0.3rem;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
+            max-width: 540px;
+            font-weight: 400;
         }
 
         /* Buttons & Actions */
         .hero-cta {
             display: flex;
             gap: 0.85rem;
-            margin-top: 0.5rem;
+            margin-top: 0.25rem;
         }
 
         .btn {
-            background: var(--accent-gradient);
+            background: var(--accent-cyan-gradient);
             color: white;
             border: none;
             padding: 0.75rem 1.65rem;
@@ -341,21 +237,12 @@
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            box-shadow: var(--shadow-glow);
+            box-shadow: var(--shadow-cyan-glow);
         }
 
         .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.45);
-        }
-
-        .btn-cyan {
-            background: var(--accent-cyan-gradient);
-            box-shadow: var(--shadow-cyan-glow);
-        }
-
-        .btn-cyan:hover {
-            box-shadow: 0 10px 25px rgba(6, 182, 212, 0.45);
+            box-shadow: 0 10px 25px rgba(0, 210, 255, 0.45);
         }
 
         .btn-secondary {
@@ -372,51 +259,202 @@
             transform: translateY(-1px);
         }
 
-        /* Bottom Footer */
-        .footer {
+        /* Features 2x2 Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.85rem;
+            margin-top: 0.5rem;
+            max-width: 540px;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            transition: all 0.25s ease;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .feature-card:hover {
+            border-color: rgba(0, 210, 255, 0.3);
+            background: rgba(20, 28, 52, 0.6);
+            transform: translateY(-1px);
+        }
+
+        .feature-icon-wrapper {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.15rem;
+        }
+
+        .feature-icon-wrapper.blue {
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid rgba(0, 210, 255, 0.25);
+            color: var(--accent-cyan);
+        }
+
+        .feature-icon-wrapper.purple {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            color: var(--accent-indigo);
+        }
+
+        .feature-icon-wrapper.green {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            color: #10B981;
+        }
+
+        .feature-icon-wrapper.orange {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.25);
+            color: #F59E0B;
+        }
+
+        .feature-text {
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+        }
+
+        .feature-title {
+            font-weight: 700;
+            color: var(--text-light);
+            font-size: 0.92rem;
+        }
+
+        .feature-desc {
+            font-size: 0.78rem;
+            color: var(--text-dim);
+        }
+
+        /* Left Panel: Floating Screenshot Card */
+        .floating-card-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 0.5rem;
+            box-shadow: var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            width: 100%;
+            max-width: 480px;
+            transition: transform 0.3s ease;
+        }
+
+        .floating-card:hover {
+            transform: scale(1.01);
+        }
+
+        .floating-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 12px;
+            display: block;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Bottom Sector target banner */
+        .sector-targets-bar {
             width: 100%;
             border-top: 1px solid var(--border-color);
-            padding-top: 0.75rem;
-            text-align: center;
-            color: var(--text-dim);
-            font-size: 0.8rem;
+            padding-top: 0.85rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
         }
 
-        .footer-slogan {
-            font-weight: 600;
+        .sector-rules-list {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .sector-rule-title {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            font-weight: 700;
+        }
+
+        .sector-rule-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.85rem;
+            color: var(--text-light);
+        }
+
+        .sector-rule-icon {
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .sector-rule-text strong {
             color: var(--accent-cyan);
-            text-shadow: 0 0 10px rgba(6, 182, 212, 0.1);
         }
 
-        /* Adjustments for smaller screen / laptop height */
+        /* Floating animation keyframes */
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        /* Responsive height adjustments for laptop screens */
         @media (max-height: 700px) {
             body {
-                padding: 0.75rem 1.5rem;
+                padding: 0.75rem 2rem;
             }
             .hero-title {
-                font-size: 2.2rem;
-            }
-            .hero-slogan {
-                font-size: 1.15rem;
+                font-size: 2.5rem;
             }
             .hero-description {
-                font-size: 0.9rem;
+                font-size: 0.95rem;
             }
-            .bullet-item {
-                font-size: 0.85rem;
-            }
-            .mock-card .val {
-                font-size: 1.25rem;
-            }
-            .hero-preview {
-                gap: 0.75rem;
-                padding: 1rem;
+            .floating-card {
+                max-width: 420px;
             }
             .main-layout {
                 gap: 2rem;
+            }
+            .features-grid {
+                gap: 0.65rem;
+            }
+            .feature-card {
+                padding: 0.6rem 0.85rem;
+            }
+            .sector-targets-bar {
+                padding-top: 0.65rem;
             }
         }
     </style>
@@ -427,70 +465,111 @@
         <!-- Header -->
         <header class="header">
             <a href="#" class="brand">
-                <svg class="nav-logo" width="30" height="30" viewBox="0 0 64 64" fill="none" stroke="url(#logoGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <defs>
-                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" stop-color="#6366F1" />
-                            <stop offset="100%" stop-color="#06B6D4" />
-                        </linearGradient>
-                    </defs>
-                    <path d="M32 58C32 58 32 30 32 14" />
-                    <path d="M32 14C35 8 40 8 42 16C40 22 35 20 32 20" fill="rgba(6, 182, 212, 0.15)" />
-                    <path d="M32 28C38 24 46 26 48 34C42 38 36 32 32 32" fill="rgba(6, 182, 212, 0.15)" />
-                    <path d="M32 34C26 30 18 32 16 40C22 44 28 38 32 38" fill="rgba(6, 182, 212, 0.15)" />
-                    <path d="M32 42C37 39 42 41 44 47C40 50 36 46 32 45" fill="rgba(6, 182, 212, 0.15)" />
-                    <path d="M32 46C27 43 22 45 20 51C24 54 28 50 32 49" fill="rgba(6, 182, 212, 0.15)" />
-                </svg>
-                <h1>מעקב גמול השתלמות</h1>
+                <div class="brand-logo-container">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z" fill="rgba(0, 210, 255, 0.15)" />
+                        <path d="M2 17l10 5 10-5" />
+                        <path d="M2 12l10 5 10-5" />
+                    </svg>
+                </div>
+                <h1>Gemul<span class="pro-text">Pro</span></h1>
             </a>
-            <span style="font-size: 0.8rem; color: #A5B4FC; font-weight: bold; background: rgba(99, 102, 241, 0.12); border: 1px solid rgba(99, 102, 241, 0.25); padding: 0.2rem 0.6rem; border-radius: 12px;">מערכת מקומית מאובטחת</span>
+            <a href="index.html" class="nav-link">
+                התחבר למערכת &larr;
+            </a>
         </header>
 
         <!-- Main Layout Split Screen -->
         <main class="main-layout">
-            <!-- Content Panel -->
-            <div class="hero-content">
-                <h2 class="hero-title">הגמול שלך,<br>השליטה שלך.</h2>
-                <div class="hero-slogan">
-                    "מעקב שעות השתלמות, 100% בפרטיות שלך."
-                </div>
-                <p class="hero-description">
-                    הכירו את המערכת המתקדמת לחישוב וניהול שעות ההשתלמות והקורסים שלכם. מחובר ישירות לקובץ האקסל המקומי שלכם במחשב, ללא שרתים חיצוניים וללא פגיעה בפרטיות.
-                </p>
-                <div class="bullet-list">
-                    <div class="bullet-item">
-                        <span class="bullet-icon">🔒</span>
-                        <span><strong>100% פרטיות (Local-First):</strong> הנתונים והמסמכים שלכם נשארים אך ורק במחשב האישי שלכם.</span>
-                    </div>
-                    <div class="bullet-item">
-                        <span class="bullet-icon">⚡</span>
-                        <span><strong>סנכרון ישיר לאקסל:</strong> כתיבה ועדכון קובץ האקסל המקומי שלכם במחשב בזמן אמת.</span>
-                    </div>
-                    <div class="bullet-item">
-                        <span class="bullet-icon">⚙️</span>
-                        <span><strong>חוקי סקטורים מובנים:</strong> חישוב יעדים אוטומטי (מהנדסים, אקדמאים, מנהליים).</span>
-                    </div>
-                </div>
-                <div class="hero-cta">
-                    <a href="index.html" class="btn btn-cyan">
-                        להתחלת שימוש חינם 🚀
-                    </a>
-                    <a href="index.html" class="btn btn-secondary">
-                        כניסה למערכת
-                    </a>
+            <!-- Left Panel: Floating Screenshot Card -->
+            <div class="floating-card-wrapper">
+                <div class="floating-card">
+                    <img src="dashboard_preview.png" alt="צילום מסך המערכת">
                 </div>
             </div>
 
-            <!-- Real dashboard screenshot -->
-            <div style="display: flex; align-items: center; justify-content: center; position: relative;">
-                <img src="dashboard_preview.png" alt="תצוגת המערכת" style="width: 100%; max-width: 480px; height: auto; border-radius: 12px; border: 2px solid var(--border-color); box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4); transition: transform 0.3s ease; display: block;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+            <!-- Right Panel: Hero Content -->
+            <div class="hero-content">
+                <div class="brand-badge">
+                    <span>Local-First 100%</span>
+                    <span>🔒</span>
+                </div>
+                
+                <h2 class="hero-title">
+                    השליטה על הגמול.<br><span>הכל אצלך.</span>
+                </h2>
+
+                <p class="hero-description">
+                    מערכת חכמה לניהול, ריכוז וחישוב שעות הגמול שלך. בלי שרתים, בלי תלות ברשת – הנתונים והמסמכים שלך נשארים אצלך במחשב.
+                </p>
+
+                <!-- Features Grid -->
+                <div class="features-grid">
+                    <!-- Feature 1 -->
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper blue">🛡️</div>
+                        <div class="feature-text">
+                            <span class="feature-title">פרטיות מוחלטת</span>
+                            <span class="feature-desc">File System Access</span>
+                        </div>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper purple">📊</div>
+                        <div class="feature-text">
+                            <span class="feature-title">דאשבורד חכם</span>
+                            <span class="feature-desc">מעקב יעדים אוטומטי</span>
+                        </div>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper green">💹</div>
+                        <div class="feature-text">
+                            <span class="feature-title">אקסל מובנה</span>
+                            <span class="feature-desc">מופעל ע"י SheetJS</span>
+                        </div>
+                    </div>
+                    <!-- Feature 4 -->
+                    <div class="feature-card">
+                        <div class="feature-icon-wrapper orange">📂</div>
+                        <div class="feature-text">
+                            <span class="feature-title">מסמכים מקושרים</span>
+                            <span class="feature-desc">פתיחה בקליק מהטבלה</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA Button -->
+                <div class="hero-cta">
+                    <a href="index.html" class="btn">
+                        להתחלת שימוש חינם 🚀
+                    </a>
+                </div>
             </div>
         </main>
 
-        <!-- Footer -->
-        <footer class="footer">
-            <span class="footer-slogan">"הגמול שלך, השליטה שלך. מעקב שעות השתלמות, 100% בפרטיות שלך."</span>
-            <span>© כל הזכויות שמורות לרחל נפתלברג</span>
+        <!-- Bottom Sector Targets Bar -->
+        <footer class="sector-targets-bar">
+            <div class="sector-rules-list">
+                <span class="sector-rule-title">חוקיות מובנית במערכת:</span>
+                
+                <div class="sector-rule-badge">
+                    <span class="sector-rule-icon">👷</span>
+                    <span class="sector-rule-text">מהנדסים: <strong>390 שעות</strong></span>
+                </div>
+                
+                <div class="sector-rule-badge">
+                    <span class="sector-rule-icon">🎓</span>
+                    <span class="sector-rule-text">אקדמאים/הנדסאים: <strong>400 שעות</strong></span>
+                </div>
+                
+                <div class="sector-rule-badge">
+                    <span class="sector-rule-icon">👥</span>
+                    <span class="sector-rule-text">מנהליים: <strong>400 שעות (א' בלבד)</strong></span>
+                </div>
+            </div>
+            
+            <span style="font-size: 0.8rem; color: var(--text-dim);">© כל הזכויות שמורות לרחל נפתלברג</span>
         </footer>
     </div>
 
