@@ -10,17 +10,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Frank+Ruhl+Libre:wght@400;500;700&display=swap');
 
 :root {
-    --bg-color: #ECE8DD;          /* Darker warm sand background for card isolation */
-    --bg-panel: #FFFFFF;          /* Pure white card for maximum pop */
-    --border-color: #AAA393;      /* Solid darker border for strong borders */
-    --primary-color: #273827;     /* Very deep forest sage green for maximum text legibility */
-    --primary-color-hover: #162416; /* Extremely dark forest/black-green */
-    --success-color: #273827;     /* Deep green */
-    --warning-color: #99621E;     /* Deeper, highly visible gold/ochre */
-    --danger-color: #8C3E33;      /* Deeper, highly visible terracotta/rose */
-    --text-main: #0B0E0B;         /* Solid near-black for perfect readability */
-    --text-muted: #3D443D;        /* Much darker muted text for strong readability */
-    --glass-shadow: 0 4px 24px rgba(39, 56, 39, 0.08), 0 2px 8px rgba(0, 0, 0, 0.06);
+    --bg-color: #EBF4F3;          /* Soft pristine cool teal porcelain background */
+    --bg-panel: #FFFFFF;          /* Pure white card */
+    --border-color: #A6CECA;      /* Refined soft teal-cyan border */
+    --primary-color: #0E5E57;     /* Deep petrol teal - executive & crisp */
+    --primary-color-hover: #073834; /* Rich dark teal-black */
+    --accent-cyan: #00B4D8;       /* Electric cyan accent from the glowing logo */
+    --success-color: #0E5E57;     /* Rich deep teal */
+    --warning-color: #D97706;     /* Vibrant warm amber for training hours */
+    --danger-color: #E11D48;      /* Rose red */
+    --text-main: #0B1F22;         /* Deepest petrol navy for 100% crystal clear readability */
+    --text-muted: #385E62;        /* Elegant dark teal-slate */
+    --glass-shadow: 0 4px 24px rgba(14, 94, 87, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 * {
@@ -40,8 +41,8 @@ body {
     flex-direction: column;
     align-items: center;
     background-image: 
-        radial-gradient(at 0% 0%, rgba(107, 124, 107, 0.03) 0px, transparent 50%),
-        radial-gradient(at 100% 100%, rgba(211, 162, 97, 0.02) 0px, transparent 50%);
+        radial-gradient(at 0% 0%, rgba(14, 94, 87, 0.04) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(0, 180, 216, 0.03) 0px, transparent 50%);
 }
 
 .container {
@@ -92,7 +93,7 @@ body {
 }
 
 .header-logo {
-    filter: drop-shadow(0 4px 12px rgba(39, 56, 39, 0.15));
+    filter: drop-shadow(0 4px 12px rgba(14, 94, 87, 0.15));
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     flex-shrink: 0;
 }
@@ -297,7 +298,7 @@ body {
 }
 
 .progress-container {
-    background: #D5D0C2;
+    background: #D2E7E4;
     border-radius: 10px;
     height: 8px;
     width: 100%;
@@ -308,13 +309,14 @@ body {
 .progress-bar {
     height: 100%;
     border-radius: 10px;
-    background: var(--primary-color);
+    background: linear-gradient(135deg, #0E5E57 0%, #00B4D8 100%);
     transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: none;
+    box-shadow: 0 0 10px rgba(0, 180, 216, 0.25);
 }
 
 #progress-training {
-    background: var(--warning-color);
+    background: linear-gradient(135deg, #D97706 0%, #FBBF24 100%);
+    box-shadow: 0 0 10px rgba(217, 119, 6, 0.25);
 }
 
 /* Controls Bar */
@@ -359,12 +361,12 @@ th {
     font-size: 0.95rem;
     letter-spacing: 0.2px;
     text-transform: none;
-    background-color: #EDEAE4;
+    background-color: #DFECEB;
     border-bottom: 2px solid var(--border-color);
 }
 
 tr:hover {
-    background: #FAF9F6;
+    background: #F4FAF9;
 }
 
 /* Form Styles */
@@ -420,8 +422,8 @@ select option {
 }
 
 .badge-success {
-    background: rgba(39, 56, 39, 0.15);
-    color: #1F2D1F;
+    background: rgba(14, 94, 87, 0.15);
+    color: #0E5E57;
     font-weight: 600;
 }
 
@@ -629,7 +631,7 @@ select.table-select:focus, input.table-select:focus {
 .sector-badge {
     color: var(--primary-color);
     font-weight: 700;
-    background: rgba(39, 56, 39, 0.08);
+    background: rgba(14, 94, 87, 0.08);
     padding: 0.2rem 0.75rem;
     border-radius: 12px;
 }
@@ -665,7 +667,7 @@ select.table-select:focus, input.table-select:focus {
 }
 
 .help-card-privacy {
-    background: rgba(39, 56, 39, 0.04);
+    background: rgba(14, 94, 87, 0.04);
     border: 1px dashed var(--primary-color);
     border-radius: 8px;
     padding: 0.75rem 1rem;
@@ -744,7 +746,7 @@ select.table-select:focus, input.table-select:focus {
 }
 
 .help-badge-inline {
-    background: rgba(39, 56, 39, 0.08);
+    background: rgba(14, 94, 87, 0.08);
     color: var(--primary-color);
     padding: 0.1rem 0.5rem;
     border-radius: 4px;
@@ -817,7 +819,7 @@ select.table-select:focus, input.table-select:focus {
                 כדי לחבר את האפליקציה למסמכים שלך, אנא בחר/י את התיקייה המלאה שלך במחשב ("גמול השתלמות").<br>
                 המערכת תאתר אוטומטית את קובץ האקסל וייווצר בה אזור מסמכים.
             </p>
-            <div style="font-size: 0.85rem; color: #1F2D1F; background: rgba(39, 56, 39, 0.05); padding: 0.75rem 1rem; border-radius: 6px; margin-bottom: 0.5rem; text-align: center; border: 1px dashed var(--border-color); width: 100%; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.4;">
+            <div style="font-size: 0.85rem; color: #0E5E57; background: rgba(14, 94, 87, 0.05); padding: 0.75rem 1rem; border-radius: 6px; margin-bottom: 0.5rem; text-align: center; border: 1px dashed var(--border-color); width: 100%; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.4;">
                 🔒 <strong>פרטיות מלאה ומאובטחת:</strong> הנתונים והקבצים שלכם אינם מועלים לאף שרת! כל החישובים, הקבצים וקובץ האקסל שלכם נשמרים ומעובדים אך ורק באופן מקומי על גבי המחשב והדפדפן האישי שלכם.
             </div>
             <div class="form-group" style="width: 100%; max-width: 300px; text-align: right;">
@@ -2169,7 +2171,7 @@ function updateStyling(selectElem) {
     const val = selectElem.value;
     selectElem.classList.remove('badge-success', 'badge-warning', 'badge-danger');
     if (val === 'בוצע') {
-        selectElem.style.background = 'rgba(39, 56, 39, 0.15)';
+        selectElem.style.background = 'rgba(14, 94, 87, 0.15)';
         selectElem.style.color = '#1F2D1F';
         selectElem.style.fontWeight = '600';
     } else if (val === 'בתהליך') {
